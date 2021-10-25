@@ -1,4 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
 
@@ -105,6 +106,23 @@ int main()
     menuAnimationSprite2.setTexture(menuAnimationTexture2);
     menuAnimationSprite2.setPosition(sf::Vector2f(0.8 * desktopSize.width, 0.5 * desktopSize.height));
     menuAnimationSprite2.setScale(-0.5, 0.5);
+
+    // Music theme
+
+    bool isMusicOn = true;
+
+    sf::Music musicTheme;
+    if (!musicTheme.openFromFile("assets/music/menu/musicTheme.wav"))
+        return -1;
+    if (isMusicOn)
+    {
+        musicTheme.play();
+    }
+    else
+    {
+        musicTheme.pause();
+    }
+    musicTheme.setLoop(true);
 
     while (window.isOpen())
     {
