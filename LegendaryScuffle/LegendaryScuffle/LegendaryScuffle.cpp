@@ -4,6 +4,7 @@
 #include <string>
 
 void menuUpdateAnimation(sf::Texture* texture, int* clip, int lastClip, float* deltaTime, float* deltaTimeMax, float* pauseTime, std::string source);
+void menuMusicPlay(sf::Sprite* button, sf::Texture* on, sf::Texture* off, sf::Music* music);
 
 int main()
 {
@@ -124,6 +125,20 @@ int main()
     }
     musicTheme.setLoop(true);
 
+    // Music ON/OFF button
+
+    sf::Texture menuSoundOnTexture;
+    menuSoundOnTexture.loadFromFile("assets/music/icon/sound-on.png");
+    menuSoundOnTexture.setSmooth(true);
+
+    sf::Texture menuSoundOffTexture;
+    menuSoundOffTexture.loadFromFile("assets/music/icon/no-sound.png");
+    menuSoundOffTexture.setSmooth(true);
+    
+    sf::Sprite menuSoundOnButton;
+    menuSoundOnButton.setTexture(menuSoundOnTexture);
+    menuSoundOnButton.setPosition(sf::Vector2f(100, 100));
+
     while (window.isOpen())
     {
         clockLaps = clock.restart().asSeconds();
@@ -137,6 +152,10 @@ int main()
         {
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 window.close();
+            else if (event.type == sf::Event::MouseButtonReleased)
+            {
+                menuMusicPlay(&menuSoundOnButton, &menuSoundOnTexture, &menuSoundOffTexture, &musicTheme);
+            }
         }
 
         window.clear(sf::Color(96, 108, 56));
@@ -150,6 +169,7 @@ int main()
         window.draw(openRulesText);
         window.draw(exitButton);
         window.draw(exitText);
+        window.draw(menuSoundOnButton);
         if (pauseTime1 >= 3.0f)
         {
             menuUpdateAnimation(&menuAnimationTexture1, &clip1, 11, &deltaTime1, &maxDelta1, &pauseTime1, "assets/player/player01/slashing/slashing");
@@ -201,5 +221,31 @@ void menuUpdateAnimation(sf::Texture* texture, int * clip, int lastClip, float *
         source.append(png);
 
         texture->loadFromFile(source);
+    }
+}
+
+void menuMusicPlay(sf::Sprite* button, sf::Texture* on, sf::Texture* off, sf::Music* music)
+{
+    float buttonX = button->getPosition().x;
+    float buttonY = button->getPosition().y;
+    float buttonWidthX = button->getGlobalBounds().width;
+    float buttonWidthY = button->getGlobalBounds().height;
+        
+    float mousePositionX = sf::Mouse::getPosition().x;
+    float mousePositionY = sf::Mouse::getPosition().y;
+
+    if (mousePositionX >= buttonX && mousePositionX <= (buttonX+mousePositionX) && mousePositionY >= buttonY && mousePositionY <= (buttonY+buttonWidthY))
+    {
+        if (button->getTexture() == on)
+        {
+            button->setTexture(*off);
+            music->pause();
+        }
+        else
+        {
+            button->setTexture(*on);
+            music->play();
+        }
+            
     }
 }
