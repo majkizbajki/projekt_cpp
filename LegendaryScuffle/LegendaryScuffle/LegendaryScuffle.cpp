@@ -2,9 +2,12 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
+#include <vector>
 
 void menuUpdateAnimation(sf::Texture* texture, int* clip, int lastClip, float* deltaTime, float* deltaTimeMax, float* pauseTime, std::string source);
 void menuMusicPlay(sf::Sprite* button, sf::Texture* on, sf::Texture* off, sf::Music* music);
+void openRules(sf::RectangleShape* button, sf::Sprite* mainWindowButton, std::vector <sf::Text>* rulesControlsAssets, sf::RenderWindow* window, bool* isMenuWindowOpen);
+void closeRules(sf::Sprite* button, bool* isMenuWindowOpen);
 
 int main()
 {
@@ -127,6 +130,8 @@ int main()
 
     // Music ON/OFF button
 
+    bool isMusicClickable = true;
+
     sf::Texture menuSoundOnTexture;
     menuSoundOnTexture.loadFromFile("assets/music/icon/sound-on.png");
     menuSoundOnTexture.setSmooth(true);
@@ -137,7 +142,65 @@ int main()
     
     sf::Sprite menuSoundOnButton;
     menuSoundOnButton.setTexture(menuSoundOnTexture);
-    menuSoundOnButton.setPosition(sf::Vector2f(100, 100));
+    menuSoundOnButton.setPosition(sf::Vector2f(0.9 * desktopSize.width, 0.05 * desktopSize.height));
+
+    // isMenuWindowOpen
+
+    bool isMenuWindowOpen = true;
+
+    // Back to menu button
+
+    sf::Texture LeftArrow;
+    LeftArrow.loadFromFile("assets/left-arrow.png");
+    LeftArrow.setSmooth(true);
+
+    sf::Sprite LeftArrowButton;
+    LeftArrowButton.setTexture(LeftArrow);
+    LeftArrowButton.setPosition(sf::Vector2f(0.05 * desktopSize.width, 0.05 * desktopSize.height));
+
+    // Rules text
+
+    sf::Text rulesText("RULES", menuFont);
+    rulesText.setCharacterSize(50);
+    rulesText.setFillColor(sf::Color(254, 250, 224));
+    rulesText.setPosition(sf::Vector2f(0.25 * desktopSize.width, 0.2 * desktopSize.height));
+
+    sf::Text rulesDescriptionText("The main goal of the game is to survive as many\n rounds as possible fighting against the enemies.\n During the game you can get money and bonuses\n that you can spend on character upgrades and\n become even stronger. The game ends when\n all your life is lost and you start over.", menuFont);
+    rulesDescriptionText.setCharacterSize(30);
+    rulesDescriptionText.setFillColor(sf::Color(254, 250, 224));
+    rulesDescriptionText.setPosition(sf::Vector2f(0.1 * desktopSize.width, 0.3 * desktopSize.height));
+
+    // Controls text
+
+    sf::Text controlsText("CONTROLS", menuFont);
+    controlsText.setCharacterSize(50);
+    controlsText.setFillColor(sf::Color(254, 250, 224));
+    controlsText.setPosition(sf::Vector2f(0.7 * desktopSize.width, 0.2 * desktopSize.height));
+
+    sf::Text wasdText("W,A,S,D - moving",menuFont);
+    wasdText.setCharacterSize(30);
+    wasdText.setFillColor(sf::Color(254, 250, 224));
+    wasdText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.3 * desktopSize.height));
+
+    sf::Text spaceText("Space - shooting/atacking", menuFont);
+    spaceText.setCharacterSize(30);
+    spaceText.setFillColor(sf::Color(254, 250, 224));
+    spaceText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.4 * desktopSize.height));
+
+    sf::Text superPowerText("R - using super power", menuFont);
+    superPowerText.setCharacterSize(30);
+    superPowerText.setFillColor(sf::Color(254, 250, 224));
+    superPowerText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.5 * desktopSize.height));
+
+    // Rules / controls sf::text vector
+
+    std::vector <sf::Text> rulesControlsAssets;
+    rulesControlsAssets.push_back(rulesText);
+    rulesControlsAssets.push_back(rulesDescriptionText);
+    rulesControlsAssets.push_back(controlsText);
+    rulesControlsAssets.push_back(wasdText);
+    rulesControlsAssets.push_back(spaceText);
+    rulesControlsAssets.push_back(superPowerText);
 
     while (window.isOpen())
     {
@@ -154,31 +217,42 @@ int main()
                 window.close();
             else if (event.type == sf::Event::MouseButtonReleased)
             {
-                menuMusicPlay(&menuSoundOnButton, &menuSoundOnTexture, &menuSoundOffTexture, &musicTheme);
+                if (isMenuWindowOpen)
+                {
+                    menuMusicPlay(&menuSoundOnButton, &menuSoundOnTexture, &menuSoundOffTexture, &musicTheme);
+                    openRules(&openRulesButton, &LeftArrowButton, &rulesControlsAssets, &window, &isMenuWindowOpen);
+                }
+                else
+                {
+                    closeRules(&LeftArrowButton, &isMenuWindowOpen);
+                }
             }
         }
 
-        window.clear(sf::Color(96, 108, 56));
-        
-        window.draw(gameTitle);
-        window.draw(startGameButton);
-        window.draw(startGameText);
-        window.draw(openShopButton);
-        window.draw(openShopText);
-        window.draw(openRulesButton);
-        window.draw(openRulesText);
-        window.draw(exitButton);
-        window.draw(exitText);
-        window.draw(menuSoundOnButton);
-        if (pauseTime1 >= 3.0f)
+        if (isMenuWindowOpen)
         {
-            menuUpdateAnimation(&menuAnimationTexture1, &clip1, 11, &deltaTime1, &maxDelta1, &pauseTime1, "assets/player/player01/slashing/slashing");
-        }
-        menuUpdateAnimation(&menuAnimationTexture2, &clip2, 11, &deltaTime2, &maxDelta2, &pauseTime2, "assets/player/player02/running/running");
-        window.draw(menuAnimationSprite1);
-        window.draw(menuAnimationSprite2);
+            window.clear(sf::Color(96, 108, 56));
 
-        window.display();
+            window.draw(gameTitle);
+            window.draw(startGameButton);
+            window.draw(startGameText);
+            window.draw(openShopButton);
+            window.draw(openShopText);
+            window.draw(openRulesButton);
+            window.draw(openRulesText);
+            window.draw(exitButton);
+            window.draw(exitText);
+            window.draw(menuSoundOnButton);
+            if (pauseTime1 >= 3.0f)
+            {
+                menuUpdateAnimation(&menuAnimationTexture1, &clip1, 11, &deltaTime1, &maxDelta1, &pauseTime1, "assets/player/player01/slashing/slashing");
+            }
+            menuUpdateAnimation(&menuAnimationTexture2, &clip2, 11, &deltaTime2, &maxDelta2, &pauseTime2, "assets/player/player02/running/running");
+            window.draw(menuAnimationSprite1);
+            window.draw(menuAnimationSprite2);
+
+            window.display();
+        }
     }
 
     return 0;
@@ -228,13 +302,13 @@ void menuMusicPlay(sf::Sprite* button, sf::Texture* on, sf::Texture* off, sf::Mu
 {
     float buttonX = button->getPosition().x;
     float buttonY = button->getPosition().y;
-    float buttonWidthX = button->getGlobalBounds().width;
-    float buttonWidthY = button->getGlobalBounds().height;
+    float buttonWidth = button->getGlobalBounds().width;
+    float buttonHeight = button->getGlobalBounds().height;
         
     float mousePositionX = sf::Mouse::getPosition().x;
     float mousePositionY = sf::Mouse::getPosition().y;
 
-    if (mousePositionX >= buttonX && mousePositionX <= (buttonX+mousePositionX) && mousePositionY >= buttonY && mousePositionY <= (buttonY+buttonWidthY))
+    if (mousePositionX >= buttonX && mousePositionX <= (buttonX+buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY+buttonHeight))
     {
         if (button->getTexture() == on)
         {
@@ -247,5 +321,45 @@ void menuMusicPlay(sf::Sprite* button, sf::Texture* on, sf::Texture* off, sf::Mu
             music->play();
         }
             
+    }
+}
+
+void openRules(sf::RectangleShape* button, sf::Sprite* mainWindowButton, std::vector <sf::Text>* rulesControlsAssets, sf::RenderWindow* window, bool* isMenuWindowOpen)
+{
+    float buttonX = button->getPosition().x;
+    float buttonY = button->getPosition().y;
+    float buttonWidth = button->getGlobalBounds().width;
+    float buttonHeight = button->getGlobalBounds().height;
+
+    float mousePositionX = sf::Mouse::getPosition().x;
+    float mousePositionY = sf::Mouse::getPosition().y;
+
+    if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
+    {
+        *isMenuWindowOpen = false;
+
+        window->clear(sf::Color(96, 108, 56));
+        window->draw(*mainWindowButton);
+        for (int i = 0; i < rulesControlsAssets->size(); i++)
+        {
+            window->draw(rulesControlsAssets->at(i));
+        }
+        window->display();
+    }
+}
+
+void closeRules(sf::Sprite* button, bool* isMenuWindowOpen)
+{
+    float buttonX = button->getPosition().x;
+    float buttonY = button->getPosition().y;
+    float buttonWidth = button->getGlobalBounds().width;
+    float buttonHeight = button->getGlobalBounds().height;
+
+    float mousePositionX = sf::Mouse::getPosition().x;
+    float mousePositionY = sf::Mouse::getPosition().y;
+
+    if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
+    {
+        *isMenuWindowOpen = true;
     }
 }
