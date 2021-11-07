@@ -186,3 +186,23 @@ void Menu::drawMenu(sf::RenderWindow* window)
 
 	window->display();
 }
+
+bool Menu::closeGame()
+{
+	float buttonX = this->exitButton.getPosition().x;
+	float buttonY = this->exitButton.getPosition().y;
+	float buttonWidth = this->exitButton.getGlobalBounds().width;
+	float buttonHeight = this->exitButton.getGlobalBounds().height;
+
+	float mousePositionX = sf::Mouse::getPosition().x;
+	float mousePositionY = sf::Mouse::getPosition().y;
+
+	if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

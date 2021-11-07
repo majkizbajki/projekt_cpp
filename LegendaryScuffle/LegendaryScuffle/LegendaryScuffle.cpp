@@ -24,9 +24,15 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            {
                 window.close();
+            }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
+                if (menu.closeGame())
+                {
+                    window.close();
+                }
                 if (menu.isMenuWindowOpen)
                 {
                     menu.playPauseMusic();
