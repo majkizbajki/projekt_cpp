@@ -5,9 +5,12 @@
 class Rules
 {
 public:
+    bool isRulesOpen;
+
 	Rules(sf::Font* menuFont);
     void openRules(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen);
     void closeRules(bool* isMenuWindowOpen);
+    ~Rules();
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
 

@@ -2,6 +2,8 @@
 
 Rules::Rules(sf::Font* menuFont)
 {
+    this->isRulesOpen = false;
+
 	// Back to menu button
 	this->leftArrow.loadFromFile("assets/left-arrow.png");
 	this->leftArrow.setSmooth(true);
@@ -69,6 +71,7 @@ void Rules::openRules(sf::RectangleShape* button, sf::RenderWindow* window, bool
 
     if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
     {
+        this->isRulesOpen = true;
         *isMenuWindowOpen = false;
 
         window->clear(sf::Color(96, 108, 56));
@@ -93,6 +96,11 @@ void Rules::closeRules(bool* isMenuWindowOpen)
 
     if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
     {
+        this->isRulesOpen = false;
         *isMenuWindowOpen = true;
     }
+}
+
+Rules::~Rules()
+{
 }

@@ -24,6 +24,7 @@ public:
     void updateAnimation(sf::Texture* texture, int* clip, int lastClip, float* deltaTime, const float* deltaTimeMax, float* pauseTime, std::string source);
     void drawMenu(sf::RenderWindow* window);
     bool closeGame();
+    ~Menu();
 
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();

@@ -206,3 +206,7 @@ bool Menu::closeGame()
 		return false;
 	}
 }
+
+Menu::~Menu()
+{
+}
