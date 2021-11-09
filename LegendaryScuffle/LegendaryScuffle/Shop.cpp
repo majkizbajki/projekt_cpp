@@ -6,6 +6,7 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->isShopOpen = false;
     this->unlockedCharacter = false;
     this->enoughMoney = false;
+    this->pickedCharacter = 1;
     this->allyVector = allyVector;
 
 	// Back to menu button
@@ -71,6 +72,16 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->noMoneyText.setCharacterSize(40);
     this->noMoneyText.setFillColor(sf::Color(254, 250, 224));
     this->noMoneyText.setPosition(sf::Vector2f(0.2 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+
+    // Buy hero button
+    this->buyButtonText.setString("BUY");
+    this->buyButtonText.setFont(*menuFont);
+    this->buyButtonText.setCharacterSize(40);
+    this->buyButtonText.setFillColor(sf::Color(40, 54, 24));
+    this->buyButtonText.setPosition(sf::Vector2f(0.49 * this->desktopSize.width, 0.87 * this->desktopSize.height));
+    this->buyButton.setSize(sf::Vector2f(400, 90));
+    this->buyButton.setFillColor(sf::Color(221, 161, 94));
+    this->buyButton.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.85 * this->desktopSize.height));
 }
 
 void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
@@ -125,25 +136,46 @@ void Shop::drawShop(sf::RenderWindow* window)
         window->draw(this->characterSprites[i]);
     }
 
-    this->blockCharacter();
-    for (int i = 0; i < this->blockedSprites.size(); i++)
-    {
-        window->draw(this->blockedSprites[i]);
-    }
-
     if (this->unlockedCharacter)
     {
-
+        this->blockCharacter();
+        for (int i = 0; i < this->blockedSprites.size(); i++)
+        {
+            window->draw(this->blockedSprites[i]);
+        }
     }
     else
     {
-        window->draw(this->lockedCharacterText);
         if (this->enoughMoney)
         {
-
+            this->unlockCharacter();
+            this->blockCharacter();
+            if (!(this->allyVector->at(this->pickedCharacter).isUnlocked))
+            {
+                window->draw(this->buyButton);
+                window->draw(this->buyButtonText);
+                window->draw(this->lockedCharacterText);
+                for (int i = 0; i < this->blockedSprites.size(); i++)
+                {
+                    window->draw(this->blockedSprites[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this->blockedSprites.size(); i++)
+                {
+                    window->draw(this->blockedSprites[i]);
+                }
+            }
         }
         else
         {
+            this->blockCharacter();
+            for (int i = 0; i < this->blockedSprites.size(); i++)
+            {
+                window->draw(this->blockedSprites[i]);
+            }
+            window->draw(this->lockedCharacterText);
             window->draw(this->noMoneyText);
         }
     }
@@ -155,51 +187,27 @@ void Shop::pickCharacter()
 {
     if (this->characterSprites[0].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
+        this->pickedCharacter = 0;
         this->pickCharacterGlow.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.2 * this->desktopSize.height));
 
         this->unlockedCharacter = this->allyVector->at(0).isUnlocked;
         this->enoughMoney = true;
-
-        if (this->unlockedCharacter)
-        {
-
-        }
-        else
-        {
-            
-        }
     }
     else if (this->characterSprites[1].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
+        this->pickedCharacter = 1;
         this->pickCharacterGlow.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.2 * this->desktopSize.height));
 
         this->unlockedCharacter = this->allyVector->at(1).isUnlocked;
-        this->enoughMoney = false;
-
-        if (this->unlockedCharacter)
-        {
-
-        }
-        else
-        {
-
-        }
+        this->enoughMoney = true;
     }
     else if (this->characterSprites[2].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
+        this->pickedCharacter = 1;
         this->pickCharacterGlow.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.2 * this->desktopSize.height));
     
         this->unlockedCharacter = this->allyVector->at(2).isUnlocked;
         this->enoughMoney = false;
-
-        if (this->unlockedCharacter)
-        {
-
-        }
-        else
-        {
-
-        }
     }
 }
 
@@ -227,6 +235,14 @@ void Shop::blockCharacter()
 
             this->blockedSprites.push_back(blockedItemSprite);
         }
+    }
+}
+
+void Shop::unlockCharacter()
+{
+    if (this->buyButton.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+    {
+        this->allyVector->at(this->pickedCharacter).isUnlocked = true;
     }
 }
 

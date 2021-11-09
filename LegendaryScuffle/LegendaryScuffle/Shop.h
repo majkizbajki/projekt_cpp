@@ -9,6 +9,7 @@ public:
     bool isShopOpen;
     bool unlockedCharacter;
     bool enoughMoney;
+    short pickedCharacter;
     std::vector<Ally>* allyVector;
 
 	Shop(sf::Font* menuFont, std::vector<Ally>* allyVector);
@@ -17,6 +18,7 @@ public:
     void drawShop(sf::RenderWindow* window);
     void pickCharacter();
     void blockCharacter();
+    void unlockCharacter();
     ~Shop();
 
 private:
