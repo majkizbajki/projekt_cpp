@@ -4,8 +4,8 @@
 class Character
 {
 public:
-	float life;
-	float power;
+	double life;
+	double power;
 
 protected:
 	sf::Texture texture;

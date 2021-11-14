@@ -5,8 +5,9 @@
 class Ally : public Character
 {
 public:
-	float magicResist;
-	float armor;
+	double magicResist;
+	double armor;
+	double superPower;
 	
 	// Shop
 	bool isUnlocked;

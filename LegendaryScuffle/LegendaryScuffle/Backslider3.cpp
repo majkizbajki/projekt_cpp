@@ -6,6 +6,7 @@ Backslider3::Backslider3()
 	this->life = 100.0;
 	this->magicResist = 10.0;
 	this->power = 10.0;
+	this->superPower = 1.0;
 
 	// Shop
 	this->isUnlocked = false;

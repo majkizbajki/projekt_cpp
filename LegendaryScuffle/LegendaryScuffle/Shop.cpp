@@ -1,13 +1,16 @@
 #include "Shop.h"
 #include <iostream>
+#include <string>
+#include <iomanip>
 
 Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
 {
     this->isShopOpen = false;
     this->unlockedCharacter = false;
     this->enoughMoney = false;
-    this->pickedCharacter = 1;
+    this->pickedCharacter = 0;
     this->allyVector = allyVector;
+    this->menuFont = *menuFont;
 
 	// Back to menu button
 	this->leftArrow.loadFromFile("assets/left-arrow.png");
@@ -31,15 +34,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
         sprite.setScale(0.5, 0.5);
         if (i % 3 == 0)
         {
-            sprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+            sprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.21 * this->desktopSize.height));
         }
         else if (i % 3 == 1)
         {
-            sprite.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+            sprite.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.21 * this->desktopSize.height));
         }
         else if (i % 3 == 2)
         {
-            sprite.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+            sprite.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.21 * this->desktopSize.height));
         }
 
         this->characterSprites.push_back(sprite);
@@ -64,7 +67,7 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->lockedCharacterText.setFont(*menuFont);
     this->lockedCharacterText.setCharacterSize(40);
     this->lockedCharacterText.setFillColor(sf::Color(254, 250, 224));
-    this->lockedCharacterText.setPosition(sf::Vector2f(0.25 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+    this->lockedCharacterText.setPosition(sf::Vector2f(0.28 * this->desktopSize.width, 0.7 * this->desktopSize.height));
 
     // Not enough money text
     this->noMoneyText.setString("Sorry, you don't have enough money to buy this hero.");
@@ -78,10 +81,444 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->buyButtonText.setFont(*menuFont);
     this->buyButtonText.setCharacterSize(40);
     this->buyButtonText.setFillColor(sf::Color(40, 54, 24));
-    this->buyButtonText.setPosition(sf::Vector2f(0.49 * this->desktopSize.width, 0.87 * this->desktopSize.height));
+    this->buyButtonText.setPosition(sf::Vector2f(0.47 * this->desktopSize.width, 0.87 * this->desktopSize.height));
     this->buyButton.setSize(sf::Vector2f(400, 90));
     this->buyButton.setFillColor(sf::Color(221, 161, 94));
-    this->buyButton.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.85 * this->desktopSize.height));
+    this->buyButton.setPosition(sf::Vector2f(0.38 * this->desktopSize.width, 0.85 * this->desktopSize.height));
+
+    // Upgrade button
+    this->upgradeButtonTexture.loadFromFile("assets/shop/upgrade.png");
+    this->upgradeButtonTexture.setSmooth(true);
+    this->upgradeButton.setTexture(this->upgradeButtonTexture);
+    this->upgradeButton.setPosition(sf::Vector2f(0.43 * this->desktopSize.width, 0.69 * this->desktopSize.height));
+    this->upgradeButtonVector.push_back(this->upgradeButton);
+    this->upgradeButton.setPosition(sf::Vector2f(0.43 * this->desktopSize.width, 0.79 * this->desktopSize.height));
+    this->upgradeButtonVector.push_back(this->upgradeButton);
+    this->upgradeButton.setPosition(sf::Vector2f(0.43 * this->desktopSize.width, 0.89 * this->desktopSize.height));
+    this->upgradeButtonVector.push_back(this->upgradeButton);
+    this->upgradeButton.setPosition(sf::Vector2f(0.8 * this->desktopSize.width, 0.69 * this->desktopSize.height));
+    this->upgradeButtonVector.push_back(this->upgradeButton);
+    this->upgradeButton.setPosition(sf::Vector2f(0.8 * this->desktopSize.width, 0.79 * this->desktopSize.height));
+    this->upgradeButtonVector.push_back(this->upgradeButton);
+
+    // Upgrade Sprites and text
+    this->lifeTexture.loadFromFile("assets/shop/heart.png");
+    this->lifeTexture.setSmooth(true);
+    this->powerTexture.loadFromFile("assets/shop/power.png");
+    this->powerTexture.setSmooth(true);
+    this->armorTexture.loadFromFile("assets/shop/armor.png");
+    this->armorTexture.setSmooth(true);
+    this->magicResistTexture.loadFromFile("assets/shop/magic.png");
+    this->magicResistTexture.setSmooth(true);
+    this->superPowerTexture.loadFromFile("assets/shop/superhero.png");
+    this->superPowerTexture.setSmooth(true);
+
+    this->lifeUpgradeTexture.loadFromFile("assets/shop/heart_upgrade.png");
+    this->lifeUpgradeTexture.setSmooth(true);
+    this->powerUpgradeTexture.loadFromFile("assets/shop/power_upgrade.png");
+    this->powerUpgradeTexture.setSmooth(true);
+    this->armorUpgradeTexture.loadFromFile("assets/shop/armor_upgrade.png");
+    this->armorUpgradeTexture.setSmooth(true);
+    this->magicResistUpgradeTexture.loadFromFile("assets/shop/magic_upgrade.png");
+    this->magicResistUpgradeTexture.setSmooth(true);
+    this->superPowerUpgradeTexture.loadFromFile("assets/shop/superhero_upgrade.png");
+    this->superPowerUpgradeTexture.setSmooth(true);
+
+    this->lifeSprite.setTexture(this->lifeTexture);
+    this->lifeSprite.setPosition(sf::Vector2f(0.85 * this->desktopSize.width, 0.01 * this->desktopSize.height));
+    this->powerSprite.setTexture(this->powerTexture);
+    this->powerSprite.setPosition(sf::Vector2f(0.85 * this->desktopSize.width, 0.05 * this->desktopSize.height));
+    this->armorSprite.setTexture(this->armorTexture);
+    this->armorSprite.setPosition(sf::Vector2f(0.85 * this->desktopSize.width, 0.09 * this->desktopSize.height));
+    this->magicResistSprite.setTexture(this->magicResistTexture);
+    this->magicResistSprite.setPosition(sf::Vector2f(0.85 * this->desktopSize.width, 0.13 * this->desktopSize.height));
+    this->superPowerSprite.setTexture(this->superPowerTexture);
+    this->superPowerSprite.setPosition(sf::Vector2f(0.85 * this->desktopSize.width, 0.17 * this->desktopSize.height));
+
+    this->lifeUpgradeSprite.setTexture(this->lifeUpgradeTexture);
+    this->lifeUpgradeSprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+    this->powerUpgradeSprite.setTexture(this->powerUpgradeTexture);
+    this->powerUpgradeSprite.setPosition(sf::Vector2f(0.5 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+    this->armorUpgradeSprite.setTexture(this->armorUpgradeTexture);
+    this->armorUpgradeSprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+    this->magicResistUpgradeSprite.setTexture(this->magicResistUpgradeTexture);
+    this->magicResistUpgradeSprite.setPosition(sf::Vector2f(0.5 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+    this->superPowerUpgradeSprite.setTexture(this->superPowerUpgradeTexture);
+    this->superPowerUpgradeSprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+
+    this->lifeText.setFont(this->menuFont);
+    this->lifeText.setCharacterSize(24);
+    this->lifeText.setFillColor(sf::Color(254, 250, 224));
+    this->lifeText.setPosition(sf::Vector2f(0.88 * this->desktopSize.width,0.01 * this->desktopSize.height));
+    this->powerText.setFont(this->menuFont);
+    this->powerText.setCharacterSize(24);
+    this->powerText.setFillColor(sf::Color(254, 250, 224));
+    this->powerText.setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.05 * this->desktopSize.height));
+    this->armorText.setFont(this->menuFont);
+    this->armorText.setCharacterSize(24);
+    this->armorText.setFillColor(sf::Color(254, 250, 224));
+    this->armorText.setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.09 * this->desktopSize.height));
+    this->magicResistText.setFont(this->menuFont);
+    this->magicResistText.setCharacterSize(24);
+    this->magicResistText.setFillColor(sf::Color(254, 250, 224));
+    this->magicResistText.setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.13 * this->desktopSize.height));
+    this->superPowerText.setFont(this->menuFont);
+    this->superPowerText.setCharacterSize(24);
+    this->superPowerText.setFillColor(sf::Color(254, 250, 224));
+    this->superPowerText.setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.17 * this->desktopSize.height));
+
+    this->lifeText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life)));
+    this->powerText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power)));
+    this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
+    this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
+    this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower).substr(0, 3));
+
+    // Upgrade text
+    if (this->pickedCharacter == 0)
+    {
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "150 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+        {
+            lifeNextLevel += "250 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
+        {
+            lifeNextLevel += "1000 )";
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->lifeUpgradeText.setFont(this->menuFont);
+        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 10 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->powerUpgradeText.setFont(this->menuFont);
+        this->powerUpgradeText.setCharacterSize(40);
+        this->powerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
+        {
+            armorNextLevel += "5 )";
+        }
+        else
+        {
+            armorNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->armorUpgradeText.setFont(this->menuFont);
+        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
+        {
+            magicResistNextLevel += "5 )";
+        }
+        else
+        {
+            magicResistNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->magicResistUpgradeText.setFont(this->menuFont);
+        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+        this->superPowerUpgradeText.setFont(this->menuFont);
+        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+    }
+    else if (this->pickedCharacter == 1)
+    {
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "1500 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "2500 )";
+        }
+        else
+        {
+            lifeNextLevel += "2000 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->lifeUpgradeText.setFont(this->menuFont);
+        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
+        {
+            powerNextLevel += "25 )";
+        }
+        else
+        {
+            powerNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->powerUpgradeText.setFont(this->menuFont);
+        this->powerUpgradeText.setCharacterSize(40);
+        this->powerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
+        {
+            armorNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
+        {
+            armorNextLevel += "25 )";
+        }
+        else
+        {
+            armorNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->armorUpgradeText.setFont(this->menuFont);
+        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
+        {
+            magicResistNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
+        {
+            magicResistNextLevel += "25 )";
+        }
+        else
+        {
+            magicResistNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->magicResistUpgradeText.setFont(this->menuFont);
+        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+        this->superPowerUpgradeText.setFont(this->menuFont);
+        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+    }
+    else if (this->pickedCharacter == 2)
+    {
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "5000 )";
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->lifeUpgradeText.setFont(this->menuFont);
+        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 100 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        this->powerUpgradeText.setFont(this->menuFont);
+        this->powerUpgradeText.setCharacterSize(40);
+        this->powerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->armorUpgradeText.setFont(this->menuFont);
+        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        this->magicResistUpgradeText.setFont(this->menuFont);
+        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
+
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+        this->superPowerUpgradeText.setFont(this->menuFont);
+        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
+    }
 }
 
 void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
@@ -139,9 +576,37 @@ void Shop::drawShop(sf::RenderWindow* window)
     if (this->unlockedCharacter)
     {
         this->blockCharacter();
+        this->upgradeCharacter();
+        
         for (int i = 0; i < this->blockedSprites.size(); i++)
         {
             window->draw(this->blockedSprites[i]);
+        }
+
+        window->draw(this->lifeSprite);
+        window->draw(this->lifeText);
+        window->draw(this->powerSprite);
+        window->draw(this->powerText);
+        window->draw(this->armorSprite);
+        window->draw(this->armorText);
+        window->draw(this->magicResistSprite);
+        window->draw(this->magicResistText);
+        window->draw(this->superPowerSprite);
+        window->draw(this->superPowerText);
+
+        window->draw(this->lifeUpgradeSprite);
+        window->draw(this->lifeUpgradeText);
+        window->draw(this->powerUpgradeSprite);
+        window->draw(this->powerUpgradeText);
+        window->draw(this->armorUpgradeSprite);
+        window->draw(this->armorUpgradeText);
+        window->draw(this->magicResistUpgradeSprite);
+        window->draw(this->magicResistUpgradeText);
+        window->draw(this->superPowerUpgradeSprite);
+        window->draw(this->superPowerUpgradeText);
+
+        for (int i = 0; i < this->upgradeButtonVector.size(); i++) {
+            window->draw(this->upgradeButtonVector.at(i));
         }
     }
     else
@@ -162,9 +627,38 @@ void Shop::drawShop(sf::RenderWindow* window)
             }
             else
             {
+                this->blockCharacter();
+                this->upgradeCharacter();
+
                 for (int i = 0; i < this->blockedSprites.size(); i++)
                 {
                     window->draw(this->blockedSprites[i]);
+                }
+
+                window->draw(this->lifeSprite);
+                window->draw(this->lifeText);
+                window->draw(this->powerSprite);
+                window->draw(this->powerText);
+                window->draw(this->armorSprite);
+                window->draw(this->armorText);
+                window->draw(this->magicResistSprite);
+                window->draw(this->magicResistText);
+                window->draw(this->superPowerSprite);
+                window->draw(this->superPowerText);
+
+                window->draw(this->lifeUpgradeSprite);
+                window->draw(this->lifeUpgradeText);
+                window->draw(this->powerUpgradeSprite);
+                window->draw(this->powerUpgradeText);
+                window->draw(this->armorUpgradeSprite);
+                window->draw(this->armorUpgradeText);
+                window->draw(this->magicResistUpgradeSprite);
+                window->draw(this->magicResistUpgradeText);
+                window->draw(this->superPowerUpgradeSprite);
+                window->draw(this->superPowerUpgradeText);
+
+                for (int i = 0; i < this->upgradeButtonVector.size(); i++) {
+                    window->draw(this->upgradeButtonVector.at(i));
                 }
             }
         }
@@ -188,26 +682,299 @@ void Shop::pickCharacter()
     if (this->characterSprites[0].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
         this->pickedCharacter = 0;
-        this->pickCharacterGlow.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+        this->pickCharacterGlow.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.21 * this->desktopSize.height));
 
         this->unlockedCharacter = this->allyVector->at(0).isUnlocked;
         this->enoughMoney = true;
+
+        this->lifeText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life)));
+        this->powerText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power)));
+        this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
+        this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
+        this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower));
+
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "150 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+        {
+            lifeNextLevel += "250 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
+        {
+            lifeNextLevel += "1000 )";
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 10 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
+        {
+            armorNextLevel += "5 )";
+        }
+        else
+        {
+            armorNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
+        {
+            magicResistNextLevel += "5 )";
+        }
+        else
+        {
+            magicResistNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
     }
     else if (this->characterSprites[1].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
         this->pickedCharacter = 1;
-        this->pickCharacterGlow.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+        this->pickCharacterGlow.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.21 * this->desktopSize.height));
 
         this->unlockedCharacter = this->allyVector->at(1).isUnlocked;
         this->enoughMoney = true;
+
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "1500 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "2500 )";
+        }
+        else
+        {
+            lifeNextLevel += "2000 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
+        {
+            powerNextLevel += "25 )";
+        }
+        else
+        {
+            powerNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
+        {
+            armorNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
+        {
+            armorNextLevel += "25 )";
+        }
+        else
+        {
+            armorNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
+        {
+            magicResistNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
+        {
+            magicResistNextLevel += "25 )";
+        }
+        else
+        {
+            magicResistNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
     }
     else if (this->characterSprites[2].getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
-        this->pickedCharacter = 1;
-        this->pickCharacterGlow.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.2 * this->desktopSize.height));
+        this->pickedCharacter = 2;
+        this->pickCharacterGlow.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.21 * this->desktopSize.height));
     
         this->unlockedCharacter = this->allyVector->at(2).isUnlocked;
-        this->enoughMoney = false;
+        this->enoughMoney = true;
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "5000 )";
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 100 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+
     }
 }
 
@@ -244,6 +1011,453 @@ void Shop::unlockCharacter()
     {
         this->allyVector->at(this->pickedCharacter).isUnlocked = true;
     }
+}
+
+void Shop::upgradeCharacter()
+{   
+    if (this->pickedCharacter == 0)
+    {
+        // LIFE LEVEL
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+            {
+                this->allyVector->at(this->pickedCharacter).life = 0;
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 250;
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 250;
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 1000;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 2500;
+            }
+            std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+            std::string lifeNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+            {
+                lifeNextLevel += "150 )";
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+            {
+                lifeNextLevel += "250 )";
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
+            {
+                lifeNextLevel += "1000 )";
+            }
+            else
+            {
+                lifeNextLevel += "2500 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            }
+            else
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+                this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // POWER LEVEL
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).powerLevel += 1;
+            this->allyVector->at(this->pickedCharacter).power += 10;
+            std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+            std::string powerNextLevel = "( + 10 )";
+            if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            }
+            else
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // ARMOR LEVEL
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
+            {
+                this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+                this->allyVector->at(this->pickedCharacter).armor += 5;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+                this->allyVector->at(this->pickedCharacter).armor += 25;
+            }
+            std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+            std::string armorNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
+            {
+                armorNextLevel += "5 )";
+            }
+            else
+            {
+                armorNextLevel += "25 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            }
+            else
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // MAGIC RESIST LEVEL
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
+            {
+                this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+                this->allyVector->at(this->pickedCharacter).magicResist += 5;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+                this->allyVector->at(this->pickedCharacter).magicResist += 25;
+            }
+            std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+            std::string magicResistNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
+            {
+                magicResistNextLevel += "5 )";
+            }
+            else
+            {
+                magicResistNextLevel += "25 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            }
+            else
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // SUPER POWER LEVEL
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
+            this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+            std::string superPowerNextLevel = "( + 0.5 )";
+            if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            }
+            else
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            }
+        }
+    }
+    else if (this->pickedCharacter == 1)
+    {
+        // LIFE LEVEL
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 1500;
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 2500;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 2000;
+            }
+            std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+            std::string lifeNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+            {
+                lifeNextLevel += "1500 )";
+            }
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+            {
+                lifeNextLevel += "2500 )";
+            }
+            else
+            {
+                lifeNextLevel += "2000 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            }
+            else
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+                this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // POWER LEVEL
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
+            {
+                this->allyVector->at(this->pickedCharacter).powerLevel += 1;
+                this->allyVector->at(this->pickedCharacter).power += 25;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).powerLevel += 1;
+                this->allyVector->at(this->pickedCharacter).power += 50;
+            }
+            std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+            std::string powerNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
+            {
+                powerNextLevel += "25 )";
+            }
+            else
+            {
+                powerNextLevel += "50 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            }
+            else
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // ARMOR LEVEL
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
+            {
+                this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+                this->allyVector->at(this->pickedCharacter).armor += 10;
+            }
+            else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
+            {
+                this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+                this->allyVector->at(this->pickedCharacter).armor += 25;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+                this->allyVector->at(this->pickedCharacter).armor += 50;
+            }
+            std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+            std::string armorNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
+            {
+                armorNextLevel += "10 )";
+            }
+            else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
+            {
+                armorNextLevel += "25 )";
+            }
+            else
+            {
+                armorNextLevel += "50 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            }
+            else
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // MAGIC RESIST LEVEL
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
+            {
+                this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+                this->allyVector->at(this->pickedCharacter).magicResist += 10;
+            }
+            else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
+            {
+                this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+                this->allyVector->at(this->pickedCharacter).magicResist += 25;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+                this->allyVector->at(this->pickedCharacter).magicResist += 50;
+            }
+            std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+            std::string magicResistNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
+            {
+                magicResistNextLevel += "10 )";
+            }
+            else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
+            {
+                magicResistNextLevel += "25 )";
+            }
+            else
+            {
+                magicResistNextLevel += "50 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            }
+            else
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // SUPER POWER LEVEL
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
+            this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+            std::string superPowerNextLevel = "( + 0.5 )";
+            if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            }
+            else
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            }
+        }
+    }
+    else if (this->pickedCharacter == 2)
+    {
+        // LIFE LEVEL
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 5000;
+            }
+            else
+            {
+                this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
+                this->allyVector->at(this->pickedCharacter).life += 2500;
+            }
+            std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+            std::string lifeNextLevel = "( + ";
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+            {
+                lifeNextLevel += "5000 )";
+            }
+            else
+            {
+                lifeNextLevel += "2500 )";
+            }
+            if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+            }
+            else
+            {
+                this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+                this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // POWER LEVEL
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).powerLevel += 1;
+            this->allyVector->at(this->pickedCharacter).power += 100;
+            std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+            std::string powerNextLevel = "( + 100 )";
+            if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+            }
+            else
+            {
+                this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            }
+        }
+        // ARMOR LEVEL
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).armorLevel += 1;
+            this->allyVector->at(this->pickedCharacter).armor += 50;
+            std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+            std::string armorNextLevel = "( + 50 )";
+            if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+            }
+            else
+            {
+                this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // MAGIC RESIST LEVEL
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
+            this->allyVector->at(this->pickedCharacter).magicResist += 50;
+            std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+            std::string magicResistNextLevel = "( + 50 )";
+            if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+            }
+            else
+            {
+                this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            }
+        }
+        // SUPER POWER LEVEL
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        {
+            this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
+            this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+            std::string superPowerNextLevel = "( + 0.5 )";
+            if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+            }
+            else
+            {
+                this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            }
+        }
+    }
+    this->lifeText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life)));
+    this->powerText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power)));
+    this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
+    this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
+    this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower).substr(0, 3));
 }
 
 Shop::~Shop()
