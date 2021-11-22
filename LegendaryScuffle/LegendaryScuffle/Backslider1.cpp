@@ -2,9 +2,9 @@
 
 Backslider1::Backslider1()
 {
-	this->armor = 15.0;
+	this->armor = 10.0;
 	this->life = 100.0;
-	this->magicResist = 15.0;
+	this->magicResist = 10.0;
 	this->power = 10.0;
 	this->superPower = 1.0;
 

@@ -158,6 +158,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="LegendaryScuffle.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rules.cpp" />
     <ClCompile Include="Shop.cpp" />
   </ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="Backslider3.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="Shop.h" />
   </ItemGroup>

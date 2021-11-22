@@ -1,9 +1,11 @@
 #include "Shop.h"
+#include "Player.h"
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cmath>
 
-Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
+Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
 {
     this->isShopOpen = false;
     this->unlockedCharacter = false;
@@ -11,6 +13,11 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->pickedCharacter = 0;
     this->allyVector = allyVector;
     this->menuFont = *menuFont;
+    this->player = player;
+    for (int i = 0; i < 5; i++)
+    {
+        this->possibleUpgrade.push_back(false);
+    }
 
 	// Back to menu button
 	this->leftArrow.loadFromFile("assets/left-arrow.png");
@@ -172,6 +179,8 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
     this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
     this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
     this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower).substr(0, 3));
+
+    this->pickCharacter();
 
     // Upgrade text
     if (this->pickedCharacter == 0)
@@ -519,6 +528,20 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector)
         this->superPowerUpgradeText.setCharacterSize(40);
         this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
     }
+
+    // Money text
+    std::string moneyString = std::to_string(this->player->money);
+    this->moneyText.setString(moneyString);
+    this->moneyText.setFont(this->menuFont);
+    this->moneyText.setCharacterSize(40);
+    this->moneyText.setFillColor(sf::Color(254, 250, 224));
+    this->moneyText.setPosition(sf::Vector2f(0.5 * this->desktopSize.width, 0.03 * this->desktopSize.height));
+
+    // Money sprite
+    this->moneyTextTexture.loadFromFile("assets/shop/coins.png");
+    this->moneyTextTexture.setSmooth(true);
+    this->moneyTextSprite.setTexture(this->moneyTextTexture);
+    this->moneyTextSprite.setPosition(sf::Vector2f(0.47 * this->desktopSize.width, 0.04 * this->desktopSize.height));
 }
 
 void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
@@ -605,8 +628,11 @@ void Shop::drawShop(sf::RenderWindow* window)
         window->draw(this->superPowerUpgradeSprite);
         window->draw(this->superPowerUpgradeText);
 
-        for (int i = 0; i < this->upgradeButtonVector.size(); i++) {
-            window->draw(this->upgradeButtonVector.at(i));
+        for (int i = 0; i < this->possibleUpgrade.size(); i++) {
+            if (possibleUpgrade[i] == true)
+            {
+                window->draw(this->upgradeButtonVector.at(i));
+            }
         }
     }
     else
@@ -657,8 +683,11 @@ void Shop::drawShop(sf::RenderWindow* window)
                 window->draw(this->superPowerUpgradeSprite);
                 window->draw(this->superPowerUpgradeText);
 
-                for (int i = 0; i < this->upgradeButtonVector.size(); i++) {
-                    window->draw(this->upgradeButtonVector.at(i));
+                for (int i = 0; i < this->possibleUpgrade.size(); i++) {
+                    if (possibleUpgrade[i] == true)
+                    {
+                        window->draw(this->upgradeButtonVector.at(i));
+                    }
                 }
             }
         }
@@ -673,6 +702,9 @@ void Shop::drawShop(sf::RenderWindow* window)
             window->draw(this->noMoneyText);
         }
     }
+
+    window->draw(this->moneyText);
+    window->draw(this->moneyTextSprite);
 
     window->display();
 }
@@ -691,7 +723,7 @@ void Shop::pickCharacter()
         this->powerText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power)));
         this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
         this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
-        this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower));
+        this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower).substr(0, 3));
 
         // LIFE LEVEL
         std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
@@ -699,18 +731,50 @@ void Shop::pickCharacter()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "150 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 150 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
         {
             lifeNextLevel += "250 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 250 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
         {
             lifeNextLevel += "1000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 1000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else
         {
             lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
@@ -719,11 +783,20 @@ void Shop::pickCharacter()
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->possibleUpgrade[0] = false;
             this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 10 )";
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel,2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
@@ -731,11 +804,20 @@ void Shop::pickCharacter()
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
             this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
         {
             armorNextLevel += "5 )";
@@ -751,11 +833,20 @@ void Shop::pickCharacter()
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
             this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
         {
             magicResistNextLevel += "5 )";
@@ -771,11 +862,20 @@ void Shop::pickCharacter()
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
             this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
@@ -783,6 +883,7 @@ void Shop::pickCharacter()
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
             this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
         }
     }
@@ -792,7 +893,14 @@ void Shop::pickCharacter()
         this->pickCharacterGlow.setPosition(sf::Vector2f(0.4 * this->desktopSize.width, 0.21 * this->desktopSize.height));
 
         this->unlockedCharacter = this->allyVector->at(1).isUnlocked;
-        this->enoughMoney = true;
+        if (this->player->money >= 10000)
+        {
+            this->enoughMoney = true;
+        }
+        else
+        {
+            this->enoughMoney = false;
+        }
 
         // LIFE LEVEL
         std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
@@ -800,14 +908,38 @@ void Shop::pickCharacter()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "1500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 1500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else
         {
             lifeNextLevel += "2000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
@@ -816,11 +948,20 @@ void Shop::pickCharacter()
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->possibleUpgrade[0] = false;
             this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
         {
             powerNextLevel += "25 )";
@@ -836,11 +977,20 @@ void Shop::pickCharacter()
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
             this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
         {
             armorNextLevel += "10 )";
@@ -860,11 +1010,20 @@ void Shop::pickCharacter()
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
             this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
         {
             magicResistNextLevel += "10 )";
@@ -884,11 +1043,20 @@ void Shop::pickCharacter()
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
             this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel * 1000 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
@@ -896,6 +1064,7 @@ void Shop::pickCharacter()
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
             this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
         }
     }
@@ -905,17 +1074,41 @@ void Shop::pickCharacter()
         this->pickCharacterGlow.setPosition(sf::Vector2f(0.7 * this->desktopSize.width, 0.21 * this->desktopSize.height));
     
         this->unlockedCharacter = this->allyVector->at(2).isUnlocked;
-        this->enoughMoney = true;
+        if (this->player->money > 25000)
+        {
+            this->enoughMoney = true;
+        }
+        else
+        {
+            this->enoughMoney = false;
+        }
+
         // LIFE LEVEL
         std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
         std::string lifeNextLevel = "( + ";
         if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "5000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 5000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         else
         {
             lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
         }
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
@@ -924,11 +1117,20 @@ void Shop::pickCharacter()
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->possibleUpgrade[0] = false;
             this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 100 )";
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
@@ -936,11 +1138,20 @@ void Shop::pickCharacter()
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
             this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
         }
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
@@ -948,11 +1159,20 @@ void Shop::pickCharacter()
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
             this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
@@ -960,10 +1180,19 @@ void Shop::pickCharacter()
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
             this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
         }
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel * 2000 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
         std::string superPowerNextLevel = "( + 0.5 )";
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
@@ -972,6 +1201,7 @@ void Shop::pickCharacter()
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
             this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
         }
 
@@ -1009,7 +1239,17 @@ void Shop::unlockCharacter()
 {
     if (this->buyButton.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
     {
+        if (this->pickedCharacter == 1)
+        {
+            this->player->money -= 10000;
+        }
+        if (this->pickedCharacter == 2)
+        {
+            this->player->money -= 25000;
+        }
         this->allyVector->at(this->pickedCharacter).isUnlocked = true;
+        std::string moneyString = std::to_string(this->player->money);
+        this->moneyText.setString(moneyString);
     }
 }
 
@@ -1018,46 +1258,83 @@ void Shop::upgradeCharacter()
     if (this->pickedCharacter == 0)
     {
         // LIFE LEVEL
-        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[0] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
             {
-                this->allyVector->at(this->pickedCharacter).life = 0;
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
-                this->allyVector->at(this->pickedCharacter).life += 250;
+                this->allyVector->at(this->pickedCharacter).life += 150;
             }
-            else if (this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+            else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 250;
             }
             else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 1000;
             }
             else
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 2500;
             }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
             std::string lifeNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
             {
                 lifeNextLevel += "150 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 150 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
             {
                 lifeNextLevel += "250 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 250 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
             {
                 lifeNextLevel += "1000 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 1000 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else
             {
                 lifeNextLevel += "2500 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
             {
@@ -1070,10 +1347,21 @@ void Shop::upgradeCharacter()
             }
         }
         // POWER LEVEL
-        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[3] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) * this->allyVector->at(this->pickedCharacter).power;
             this->allyVector->at(this->pickedCharacter).powerLevel += 1;
             this->allyVector->at(this->pickedCharacter).power += 10;
+            if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[3] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[3] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
             std::string powerNextLevel = "( + 10 )";
             if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
@@ -1083,22 +1371,35 @@ void Shop::upgradeCharacter()
             else
             {
                 this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->possibleUpgrade[3] = false;
                 this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
             }
         }
         // ARMOR LEVEL
-        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[1] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
                 this->allyVector->at(this->pickedCharacter).armorLevel += 1;
                 this->allyVector->at(this->pickedCharacter).armor += 5;
             }
             else
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
                 this->allyVector->at(this->pickedCharacter).armorLevel += 1;
                 this->allyVector->at(this->pickedCharacter).armor += 25;
             }
+            if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[1] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[1] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
             std::string armorNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
@@ -1116,22 +1417,35 @@ void Shop::upgradeCharacter()
             else
             {
                 this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->possibleUpgrade[1] = false;
                 this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // MAGIC RESIST LEVEL
-        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[4] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
                 this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
                 this->allyVector->at(this->pickedCharacter).magicResist += 5;
             }
             else
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
                 this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
                 this->allyVector->at(this->pickedCharacter).magicResist += 25;
             }
+            if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[4] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[4] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
             std::string magicResistNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
@@ -1149,14 +1463,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->possibleUpgrade[4] = false;
                 this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // SUPER POWER LEVEL
-        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[2] == true)
         {
+            this->player->money -= this->allyVector->at(this->pickedCharacter).superPowerLevel * 500;
             this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
             this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500 <= this->player->money)
+            {
+                this->possibleUpgrade[2] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[2] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
             std::string superPowerNextLevel = "( + 0.5 )";
             if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
@@ -1166,6 +1492,7 @@ void Shop::upgradeCharacter()
             else
             {
                 this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->possibleUpgrade[2] = false;
                 this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
             }
         }
@@ -1173,36 +1500,65 @@ void Shop::upgradeCharacter()
     else if (this->pickedCharacter == 1)
     {
         // LIFE LEVEL
-        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[0] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 1500;
             }
             else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 2500;
             }
             else
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 2000;
             }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
             std::string lifeNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
             {
                 lifeNextLevel += "1500 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 1500 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
             {
                 lifeNextLevel += "2500 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else
             {
                 lifeNextLevel += "2000 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 2000 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
             {
@@ -1211,22 +1567,35 @@ void Shop::upgradeCharacter()
             else
             {
                 this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+                this->possibleUpgrade[0] = false;
                 this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
             }
         }
         // POWER LEVEL
-        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[3] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) * this->allyVector->at(this->pickedCharacter).power;
                 this->allyVector->at(this->pickedCharacter).powerLevel += 1;
                 this->allyVector->at(this->pickedCharacter).power += 25;
             }
             else
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) * this->allyVector->at(this->pickedCharacter).power;
                 this->allyVector->at(this->pickedCharacter).powerLevel += 1;
                 this->allyVector->at(this->pickedCharacter).power += 50;
             }
+            if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[3] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[3] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
             std::string powerNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
@@ -1244,27 +1613,41 @@ void Shop::upgradeCharacter()
             else
             {
                 this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->possibleUpgrade[3] = false;
                 this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
             }
         }
         // ARMOR LEVEL
-        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[1] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
                 this->allyVector->at(this->pickedCharacter).armorLevel += 1;
                 this->allyVector->at(this->pickedCharacter).armor += 10;
             }
             else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
                 this->allyVector->at(this->pickedCharacter).armorLevel += 1;
                 this->allyVector->at(this->pickedCharacter).armor += 25;
             }
             else
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
                 this->allyVector->at(this->pickedCharacter).armorLevel += 1;
                 this->allyVector->at(this->pickedCharacter).armor += 50;
             }
+            if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[1] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[1] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
             std::string armorNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
@@ -1286,27 +1669,41 @@ void Shop::upgradeCharacter()
             else
             {
                 this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->possibleUpgrade[1] = false;
                 this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // MAGIC RESIST LEVEL
-        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[4] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
                 this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
                 this->allyVector->at(this->pickedCharacter).magicResist += 10;
             }
             else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
                 this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
                 this->allyVector->at(this->pickedCharacter).magicResist += 25;
             }
             else
             {
+                this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
                 this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
                 this->allyVector->at(this->pickedCharacter).magicResist += 50;
             }
+            if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[4] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[4] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
             std::string magicResistNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
@@ -1328,14 +1725,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->possibleUpgrade[4] = false;
                 this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // SUPER POWER LEVEL
-        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[2] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).superPowerLevel, 2) * 1000;
             this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
             this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 1000 <= this->player->money)
+            {
+                this->possibleUpgrade[2] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[2] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
             std::string superPowerNextLevel = "( + 0.5 )";
             if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
@@ -1345,6 +1754,7 @@ void Shop::upgradeCharacter()
             else
             {
                 this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->possibleUpgrade[2] = false;
                 this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
             }
         }
@@ -1352,27 +1762,47 @@ void Shop::upgradeCharacter()
     else if (this->pickedCharacter == 2)
     {
         // LIFE LEVEL
-        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(0).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[0] == true)
         {
             if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 5000;
             }
             else
             {
+                this->player->money -= this->allyVector->at(this->pickedCharacter).life;
                 this->allyVector->at(this->pickedCharacter).lifeLevel += 1;
                 this->allyVector->at(this->pickedCharacter).life += 2500;
             }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
             std::string lifeNextLevel = "( + ";
             if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
             {
                 lifeNextLevel += "5000 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 5000 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             else
             {
                 lifeNextLevel += "2500 )";
+                if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+                {
+                    this->possibleUpgrade[0] = true;
+                }
+                else
+                {
+                    this->possibleUpgrade[0] = false;
+                }
             }
             if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
             {
@@ -1381,14 +1811,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+                this->possibleUpgrade[0] = false;
                 this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
             }
         }
         // POWER LEVEL
-        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(3).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[3] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) * this->allyVector->at(this->pickedCharacter).power;
             this->allyVector->at(this->pickedCharacter).powerLevel += 1;
             this->allyVector->at(this->pickedCharacter).power += 100;
+            if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[3] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[3] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
             std::string powerNextLevel = "( + 100 )";
             if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
@@ -1398,14 +1840,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+                this->possibleUpgrade[3] = false;
                 this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
             }
         }
         // ARMOR LEVEL
-        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(1).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[1] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) * this->allyVector->at(this->pickedCharacter).armor;
             this->allyVector->at(this->pickedCharacter).armorLevel += 1;
             this->allyVector->at(this->pickedCharacter).armor += 50;
+            if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[1] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[1] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
             std::string armorNextLevel = "( + 50 )";
             if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
@@ -1415,14 +1869,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+                this->possibleUpgrade[1] = false;
                 this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // MAGIC RESIST LEVEL
-        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(4).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[4] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) * this->allyVector->at(this->pickedCharacter).magicResist;
             this->allyVector->at(this->pickedCharacter).magicResistLevel += 1;
             this->allyVector->at(this->pickedCharacter).magicResist += 50;
+            if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+            {
+                this->possibleUpgrade[4] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[4] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
             std::string magicResistNextLevel = "( + 50 )";
             if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
@@ -1432,14 +1898,26 @@ void Shop::upgradeCharacter()
             else
             {
                 this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+                this->possibleUpgrade[4] = false;
                 this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
             }
         }
         // SUPER POWER LEVEL
-        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+        if (this->upgradeButtonVector.at(2).getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)) && this->possibleUpgrade[2] == true)
         {
+            this->player->money -= pow(this->allyVector->at(this->pickedCharacter).superPowerLevel, 2) * 2000;
             this->allyVector->at(this->pickedCharacter).superPowerLevel += 1;
             this->allyVector->at(this->pickedCharacter).superPower += 0.5;
+            if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 2000 <= this->player->money)
+            {
+                this->possibleUpgrade[2] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[2] = false;
+            }
+            std::string moneyString = std::to_string(this->player->money);
+            this->moneyText.setString(moneyString);
             std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
             std::string superPowerNextLevel = "( + 0.5 )";
             if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
@@ -1449,8 +1927,480 @@ void Shop::upgradeCharacter()
             else
             {
                 this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+                this->possibleUpgrade[2] = false;
                 this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
             }
+        }
+    }
+    this->lifeText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life)));
+    this->powerText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power)));
+    this->armorText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor)));
+    this->magicResistText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist)));
+    this->superPowerText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).superPower).substr(0, 3));
+    this->upgradeCharacterText();
+}
+
+void Shop::upgradeCharacterText()
+{
+    if (this->pickedCharacter == 0)
+    {
+        std::string moneyString = std::to_string(this->player->money);
+        this->moneyText.setString(moneyString);
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "150 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 150 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
+        {
+            lifeNextLevel += "250 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 250 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
+        {
+            lifeNextLevel += "1000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 1000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 10 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
+        {
+            armorNextLevel += "5 )";
+        }
+        else
+        {
+            armorNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
+        {
+            magicResistNextLevel += "5 )";
+        }
+        else
+        {
+            magicResistNextLevel += "25 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+    }
+    else if (this->pickedCharacter == 1)
+    {
+        std::string moneyString = std::to_string(this->player->money);
+        this->moneyText.setString(moneyString);
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
+        {
+            lifeNextLevel += "1500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 1500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else
+        {
+            lifeNextLevel += "2000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->possibleUpgrade[0] = false;
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
+        {
+            powerNextLevel += "25 )";
+        }
+        else
+        {
+            powerNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
+        {
+            armorNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).armorLevel > 5 && this->allyVector->at(this->pickedCharacter).armorLevel < 9)
+        {
+            armorNextLevel += "25 )";
+        }
+        else
+        {
+            armorNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
+        {
+            magicResistNextLevel += "10 )";
+        }
+        else if (this->allyVector->at(this->pickedCharacter).magicResistLevel > 5 && this->allyVector->at(this->pickedCharacter).magicResistLevel < 9)
+        {
+            magicResistNextLevel += "25 )";
+        }
+        else
+        {
+            magicResistNextLevel += "50 )";
+        }
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 1000 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+        }
+    }
+    else if (this->pickedCharacter == 2)
+    {
+        std::string moneyString = std::to_string(this->player->money);
+        this->moneyText.setString(moneyString);
+        // LIFE LEVEL
+        std::string lifeLevel = std::to_string(this->allyVector->at(this->pickedCharacter).lifeLevel);
+        std::string lifeNextLevel = "( + ";
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
+        {
+            lifeNextLevel += "5000 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 5000 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        else
+        {
+            lifeNextLevel += "2500 )";
+            if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
+            {
+                this->possibleUpgrade[0] = true;
+            }
+            else
+            {
+                this->possibleUpgrade[0] = false;
+            }
+        }
+        if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
+        }
+        else
+        {
+            this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
+            this->possibleUpgrade[0] = false;
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // POWER LEVEL
+        if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[3] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[3] = false;
+        }
+        std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
+        std::string powerNextLevel = "( + 100 )";
+        if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
+        }
+        else
+        {
+            this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
+            this->possibleUpgrade[3] = false;
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+        }
+        // ARMOR LEVEL
+        if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[1] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[1] = false;
+        }
+        std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
+        std::string armorNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
+        }
+        else
+        {
+            this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
+            this->possibleUpgrade[1] = false;
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // MAGIC RESIST LEVEL
+        if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
+        {
+            this->possibleUpgrade[4] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[4] = false;
+        }
+        std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
+        std::string magicResistNextLevel = "( + 50 )";
+        if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
+        }
+        else
+        {
+            this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
+            this->possibleUpgrade[4] = false;
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+        }
+        // SUPER POWER LEVEL
+        if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 2000 <= this->player->money)
+        {
+            this->possibleUpgrade[2] = true;
+        }
+        else
+        {
+            this->possibleUpgrade[2] = false;
+        }
+        std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        std::string superPowerNextLevel = "( + 0.5 )";
+        if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
+        }
+        else
+        {
+            this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
+            this->possibleUpgrade[2] = false;
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
         }
     }
     this->lifeText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life)));

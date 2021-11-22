@@ -2,10 +2,10 @@
 
 Backslider2::Backslider2()
 {
-	this->armor = 10.0;
-	this->life = 100.0;
-	this->magicResist = 10.0;
-	this->power = 10.0;
+	this->armor = 25.0;
+	this->life = 1000.0;
+	this->magicResist = 25.0;
+	this->power = 50.0;
 	this->superPower = 1.0;
 
 	// Shop

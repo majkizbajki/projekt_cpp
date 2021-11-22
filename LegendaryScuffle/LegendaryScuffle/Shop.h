@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "Ally.h"
+#include "Player.h"
 
 class Shop
 {
@@ -13,8 +14,10 @@ public:
     short pickedCharacter;
     std::vector<Ally>* allyVector;
     sf::Window window;
+    Player* player;
+    std::vector<bool> possibleUpgrade;
 
-	Shop(sf::Font* menuFont, std::vector<Ally>* allyVector);
+	Shop(sf::Font* menuFont, std::vector<Ally>* allyVector, Player* player);
 	void openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen);
 	void closeShop(bool* isMenuWindowOpen);
     void drawShop(sf::RenderWindow* window);
@@ -22,6 +25,7 @@ public:
     void blockCharacter();
     void unlockCharacter();
     void upgradeCharacter();
+    void upgradeCharacterText();
     ~Shop();
 
 private:
@@ -41,6 +45,7 @@ private:
     sf::Texture armorUpgradeTexture;
     sf::Texture magicResistUpgradeTexture;
     sf::Texture superPowerUpgradeTexture;
+    sf::Texture moneyTextTexture;
 
     // Sprite
     sf::Sprite leftArrowButton;
@@ -58,6 +63,7 @@ private:
     sf::Sprite armorUpgradeSprite;
     sf::Sprite magicResistUpgradeSprite;
     sf::Sprite superPowerUpgradeSprite;
+    sf::Sprite moneyTextSprite;
 
     // Text
     sf::Text shopText;
@@ -74,6 +80,7 @@ private:
     sf::Text superPowerUpgradeText;
     sf::Text magicResistUpgradeText;
     sf::Text armorUpgradeText;
+    sf::Text moneyText;
 
     sf::Font menuFont;
 

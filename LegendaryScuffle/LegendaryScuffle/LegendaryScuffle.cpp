@@ -10,6 +10,7 @@
 #include "Backslider1.h"
 #include "Backslider2.h"
 #include "Backslider3.h"
+#include "Player.h"
 
 int main()
 {
@@ -30,7 +31,8 @@ int main()
     allyVector.push_back(*backslider2);
     allyVector.push_back(*backslider3);
 
-    Shop* shop = new Shop(&menu->menuFont,&allyVector);
+    Player* player = new Player();
+    Shop* shop = new Shop(&menu->menuFont,&allyVector,player);
 
     while (window.isOpen())
     {
