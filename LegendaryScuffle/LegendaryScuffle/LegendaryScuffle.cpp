@@ -11,6 +11,7 @@
 #include "Backslider2.h"
 #include "Backslider3.h"
 #include "Player.h"
+#include "Game.h"
 
 int main()
 {
@@ -34,14 +35,17 @@ int main()
     Player* player = new Player();
     Shop* shop = new Shop(&menu->menuFont,&allyVector,player);
 
+    Game* game = new Game(&menu->menuFont,&shop->pickedCharacter,backslider1, backslider2, backslider3);
+
     while (window.isOpen())
     {
         menu->animationInterval();
+        backslider1->animationInterval();
 
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            if (event.type == sf::Event::Closed)
             {
                 window.close();
             }
@@ -56,6 +60,7 @@ int main()
                     menu->playPauseMusic();
                     rules->openRules(&menu->rulesButton, &window, &menu->isMenuWindowOpen);
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
+                    game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
                 {
@@ -68,6 +73,25 @@ int main()
                         shop->closeShop(&menu->isMenuWindowOpen);
                         shop->drawShop(&window);
                     }
+                    if (game->isGameOpen)
+                    {
+                        if (game->isGamePaused)
+                        {
+                            game->closeGame(&menu->isMenuWindowOpen,&menu->musicTheme);
+                            game->continueGame();
+                        }
+                    }
+                }
+            }
+            else if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == sf::Keyboard::Escape && game->isGameOpen && game->isGamePaused == false)
+                {
+                    game->isGamePaused = true;
+                }
+                if (event.key.code == sf::Keyboard::Space && game->isGameOpen && game->isGamePaused == false)
+                {
+                    backslider1->attackAnimation = true;
                 }
             }
         }
@@ -75,6 +99,12 @@ int main()
         if (menu->isMenuWindowOpen)
         {
             menu->drawMenu(&window);
+        }
+
+        if (game->isGameOpen)
+        {
+            menu->musicTheme.stop();
+            game->drawGame(&window);
         }
     }
 
@@ -84,6 +114,7 @@ int main()
     delete backslider1;
     delete backslider2;
     delete backslider3;
+    delete game;
 
     return 0;
 }

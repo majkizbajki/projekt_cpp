@@ -13,7 +13,6 @@ public:
     bool enoughMoney;
     short pickedCharacter;
     std::vector<Ally>* allyVector;
-    sf::Window window;
     Player* player;
     std::vector<bool> possibleUpgrade;
 
@@ -30,6 +29,7 @@ public:
 
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
+    sf::Window window;
 
     // Texture
     sf::Texture leftArrow;

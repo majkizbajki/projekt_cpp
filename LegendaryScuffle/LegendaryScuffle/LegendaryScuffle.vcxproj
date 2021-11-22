@@ -156,6 +156,7 @@
     <ClCompile Include="Backslider2.cpp" />
     <ClCompile Include="Backslider3.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="LegendaryScuffle.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="Backslider2.h" />
     <ClInclude Include="Backslider3.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rules.h" />

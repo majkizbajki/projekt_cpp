@@ -6,7 +6,7 @@
 class Menu
 {
 public:
-    bool isMenuWindowOpen = true;
+    bool isMenuWindowOpen;
 
     // Fonts
     sf::Font menuFont;
@@ -16,6 +16,9 @@ public:
     sf::RectangleShape shopButton;
     sf::RectangleShape rulesButton;
     sf::RectangleShape exitButton;
+
+    // Music
+    sf::Music musicTheme;
     
     
     Menu();
@@ -61,7 +64,6 @@ private:
 
 
     // Music
-    sf::Music musicTheme;
 
     sf::Texture soundOnTexture;
     sf::Texture soundOffTexture;

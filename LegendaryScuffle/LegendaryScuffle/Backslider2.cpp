@@ -19,7 +19,10 @@ Backslider2::Backslider2()
 	// Texture and sprite
 	this->texture.loadFromFile("assets/player/player02.png");
 	this->texture.setSmooth(true);
-	this->sprite.setTexture(this->texture);
+	this->shopSprite.setTexture(this->texture);
+
+	// Game textures
+	this->loadPickedTexture(1);
 }
 
 Backslider2::~Backslider2()

@@ -2,6 +2,8 @@
 
 Menu::Menu()
 {
+	this->isMenuWindowOpen = true;
+
 	// Fonts
 	this->menuFont.loadFromFile("assets/fonts/LuckiestGuy-Regular.ttf");
 	this->titleFont.loadFromFile("assets/fonts/FredokaOne-Regular.ttf");
@@ -180,7 +182,7 @@ void Menu::drawMenu(sf::RenderWindow* window)
 	{
 		this->updateAnimation(&this->animationTexture1, &this->clip1, 11, &this->deltaTime1, &this->deltaTimeMax1, &this->pauseTime1, "assets/player/player01/slashing/slashing");
 	}
-	this->updateAnimation(&this->animationTexture2, &this->clip2, 11, &this->deltaTime2, &this->deltaTimeMax2, &pauseTime2, "assets/player/player02/running/running");
+	this->updateAnimation(&this->animationTexture2, &this->clip2, 11, &this->deltaTime2, &this->deltaTimeMax2, &this->pauseTime2, "assets/player/player02/running/running");
 	window->draw(this->animationSprite1);
 	window->draw(this->animationSprite2);
 

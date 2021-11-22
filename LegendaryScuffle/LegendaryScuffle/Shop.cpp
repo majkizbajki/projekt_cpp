@@ -559,7 +559,7 @@ void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* 
         this->isShopOpen = true;
         *isMenuWindowOpen = false;
 
-        drawShop(window);
+        this->drawShop(window);
     }
 }
 
