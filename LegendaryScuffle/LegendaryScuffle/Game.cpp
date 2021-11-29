@@ -4,6 +4,7 @@ Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, 
 {
 	this->isGameOpen = false;
     this->isGamePaused = false;
+    this->isRoundEnded = false;
     this->pickedCharacter = *pickedCharacter;
     this->gameFont = *menuFont;
 
@@ -106,9 +107,31 @@ void Game::drawGame(sf::RenderWindow* window)
     }
     else
     {
-        backslider1->move();
-        backslider1->attack();
-        window->draw(backslider1->playerSprite);
+        if (this->pickedCharacter == 0)
+        {
+            this->backslider1->move();
+            this->backslider1->attack();
+            window->draw(this->backslider1->playerSprite);
+        }
+        else if (this->pickedCharacter == 1 && this->backslider2->isUnlocked)
+        {
+            this->backslider2->move();
+            this->backslider2->attack();
+            window->draw(this->backslider2->playerSprite);
+        }
+        else if (this->pickedCharacter == 2 && this->backslider3->isUnlocked)
+        {
+            this->backslider3->move();
+            this->backslider3->attack();
+            window->draw(this->backslider3->playerSprite);
+        }
+        else
+        {
+            this->pickedCharacter = 0;
+            this->backslider1->move();
+            this->backslider1->attack();
+            window->draw(this->backslider1->playerSprite);
+        }
     }
     
     window->display();

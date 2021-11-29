@@ -38,6 +38,8 @@ public:
 
 	// Animation
 	bool attackAnimation = false;
+	bool deadAnimation = false;
+	bool endRound = false;
 
 protected:
 	sf::Sprite shopSprite;
@@ -57,6 +59,11 @@ private:
 	float pauseTimeAttack = 0.0f;
 	const float deltaTimeMaxAttack = 0.05f;
 	int clipAttack = 0;
+
+	float deltaTimeDead = 0.0f;
+	float pauseTimeDead = 0.0f;
+	const float deltaTimeMaxDead = 0.06f;
+	int clipDead = 0;
 	
 };
 

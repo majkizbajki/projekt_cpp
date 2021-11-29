@@ -12,6 +12,7 @@ class Game
 public:
 	bool isGameOpen;
 	bool isGamePaused;
+	bool isRoundEnded;
 	
 	short pickedCharacter;
 	Backslider1* backslider1;

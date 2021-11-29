@@ -41,6 +41,8 @@ int main()
     {
         menu->animationInterval();
         backslider1->animationInterval();
+        backslider2->animationInterval();
+        backslider3->animationInterval();
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -60,6 +62,8 @@ int main()
                     menu->playPauseMusic();
                     rules->openRules(&menu->rulesButton, &window, &menu->isMenuWindowOpen);
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
+                    delete game;
+                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
@@ -73,25 +77,42 @@ int main()
                         shop->closeShop(&menu->isMenuWindowOpen);
                         shop->drawShop(&window);
                     }
-                    if (game->isGameOpen)
+                    if (game)
                     {
-                        if (game->isGamePaused)
+                        if (game->isGameOpen)
                         {
-                            game->closeGame(&menu->isMenuWindowOpen,&menu->musicTheme);
-                            game->continueGame();
+                            if (game->isGamePaused)
+                            {
+                                game->closeGame(&menu->isMenuWindowOpen, &menu->musicTheme);
+                                game->continueGame();
+                            }
                         }
                     }
                 }
             }
             else if (event.type == sf::Event::KeyReleased)
             {
-                if (event.key.code == sf::Keyboard::Escape && game->isGameOpen && game->isGamePaused == false)
+                if (game)
                 {
-                    game->isGamePaused = true;
-                }
-                if (event.key.code == sf::Keyboard::Space && game->isGameOpen && game->isGamePaused == false)
-                {
-                    backslider1->attackAnimation = true;
+                    if (event.key.code == sf::Keyboard::Escape && game->isGameOpen && game->isGamePaused == false)
+                    {
+                        game->isGamePaused = true;
+                    }
+                    if (event.key.code == sf::Keyboard::Space && game->isGameOpen && game->isGamePaused == false)
+                    {
+                        if (game->pickedCharacter == 0)
+                        {
+                            game->backslider1->attackAnimation = true;
+                        }
+                        else if (game->pickedCharacter == 1)
+                        {
+                            game->backslider2->attackAnimation = true;
+                        }
+                        else if (game->pickedCharacter == 2)
+                        {
+                            game->backslider3->attackAnimation = true;
+                        }
+                    }
                 }
             }
         }
@@ -104,7 +125,81 @@ int main()
         if (game->isGameOpen)
         {
             menu->musicTheme.stop();
-            game->drawGame(&window);
+            if (game->pickedCharacter == 0)
+            {
+                if (game->backslider1->life > 0)
+                {
+                    game->drawGame(&window);
+                }
+                else if (game->backslider1->life <= 0 && game->isRoundEnded == false)
+                {
+                    game->backslider1->deadAnimation = true;
+                    game->backslider1->dead();
+                    if (game->backslider1->endRound)
+                    {
+                        game->isRoundEnded = true;
+                    }
+                    game->drawGame(&window);
+                }
+                else if (game->backslider1->life <= 0 && game->isRoundEnded == true)
+                {
+                    delete backslider1;
+                    backslider1 = new Backslider1();
+                    game->isGameOpen = false;
+                    game->isGamePaused = false;
+                    menu->isMenuWindowOpen = true;
+                }
+            }
+            else if (game->pickedCharacter == 1)
+            {
+                if (game->backslider2->life > 0)
+                {
+                    game->drawGame(&window);
+                }
+                else if (game->backslider2->life <= 0 && game->isRoundEnded == false)
+                {
+                    game->backslider2->deadAnimation = true;
+                    game->backslider2->dead();
+                    if (game->backslider2->endRound)
+                    {
+                        game->isRoundEnded = true;
+                    }
+                    game->drawGame(&window);
+                }
+                else if (game->backslider2->life <= 0 && game->isRoundEnded == true)
+                {
+                    delete backslider2;
+                    backslider2 = new Backslider2();
+                    game->isGameOpen = false;
+                    game->isGamePaused = false;
+                    menu->isMenuWindowOpen = true;
+                }
+            }
+            else if (game->pickedCharacter == 2)
+            {
+                if (game->backslider3->life > 0)
+                {
+                    game->drawGame(&window);
+                }
+                else if (game->backslider3->life <= 0 && game->isRoundEnded == false)
+                {
+                    game->backslider3->deadAnimation = true;
+                    game->backslider3->dead();
+                    if (game->backslider3->endRound)
+                    {
+                        game->isRoundEnded = true;
+                    }
+                    game->drawGame(&window);
+                }
+                else if (game->backslider3->life <= 0 && game->isRoundEnded == true)
+                {
+                    delete backslider3;
+                    backslider3 = new Backslider3();
+                    game->isGameOpen = false;
+                    game->isGamePaused = false;
+                    menu->isMenuWindowOpen = true;
+                }
+            }
         }
     }
 

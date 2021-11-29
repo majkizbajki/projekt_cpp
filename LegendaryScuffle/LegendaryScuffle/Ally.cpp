@@ -8,71 +8,81 @@ sf::Sprite Ally::getSprite()
 
 void Ally::move()
 {
-    if (this->attackAnimation == false)
+    if (this->life > 0)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        if (this->attackAnimation == false)
         {
-            this->playerSprite.move(sf::Vector2f(0, -3));
-            this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            if (this->playerSprite.getScale().x > 0)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
-                this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x + this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
+                this->playerSprite.move(sf::Vector2f(0, -3));
+                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
             }
-            this->playerSprite.move(sf::Vector2f(-3, 0));
-            this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
-            this->playerSprite.setScale(-0.25, 0.25);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            this->playerSprite.move(sf::Vector2f(0, 3));
-            this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            if (this->playerSprite.getScale().x < 0)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
-                this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x - this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
+                if (this->playerSprite.getScale().x > 0)
+                {
+                    this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x + this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
+                }
+                this->playerSprite.move(sf::Vector2f(-3, 0));
+                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->playerSprite.setScale(-0.25, 0.25);
             }
-            this->playerSprite.move(sf::Vector2f(3, 0));
-            this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
-            this->playerSprite.setScale(0.25, 0.25);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            {
+                this->playerSprite.move(sf::Vector2f(0, 3));
+                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
+                if (this->playerSprite.getScale().x < 0)
+                {
+                    this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x - this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
+                }
+                this->playerSprite.move(sf::Vector2f(3, 0));
+                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->playerSprite.setScale(0.25, 0.25);
+            }
         }
     }
 }
 
 void Ally::attack()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->attackAnimation == true)
+    if (this->life > 0)
     {
-        this->playerSprite.move(sf::Vector2f(0, -3));
-        this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->attackAnimation == true)
-    {
-        this->playerSprite.move(sf::Vector2f(-3, 0));
-        this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->attackAnimation == true)
-    {
-        this->playerSprite.move(sf::Vector2f(0, 3));
-        this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->attackAnimation == true)
-    {
-        this->playerSprite.move(sf::Vector2f(3, 0));
-        this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
-    }
-    else if(this->attackAnimation == true)
-    {
-        this->updateTexture(&this->playerStaticAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->attackAnimation == true)
+        {
+            this->playerSprite.move(sf::Vector2f(0, -3));
+            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->attackAnimation == true)
+        {
+            this->playerSprite.move(sf::Vector2f(-3, 0));
+            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->attackAnimation == true)
+        {
+            this->playerSprite.move(sf::Vector2f(0, 3));
+            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->attackAnimation == true)
+        {
+            this->playerSprite.move(sf::Vector2f(3, 0));
+            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        }
+        else if (this->attackAnimation == true)
+        {
+            this->updateTexture(&this->playerStaticAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+        }
     }
 }
 
 void Ally::dead()
 {
+    if (this->life <= 0 && this->deadAnimation == true)
+    {
+        this->updateTexture(&this->playerDeadTexture, &this->deltaTimeDead, &this->deltaTimeMaxDead, &this->pauseTimeDead, &this->clipDead);
+    }
 }
 
 void Ally::loadPickedTexture(int pickedCharacter)
@@ -151,6 +161,11 @@ void Ally::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTi
             {
                 this->attackAnimation = false;
             }
+            if (&this->clipDead == clip)
+            {
+                this->deadAnimation = false;
+                this->endRound = true;
+            }
         }
         *deltaTime = 0.0f;
 
@@ -165,4 +180,6 @@ void Ally::animationInterval()
     this->pauseTimeMove += clockLaps;
     this->deltaTimeAttack += clockLaps;
     this->pauseTimeAttack += clockLaps;
+    this->deltaTimeDead += clockLaps;
+    this->pauseTimeDead += clockLaps;
 }
