@@ -1,4 +1,5 @@
 #include "Ally.h"
+#include "Enemy.h"
 #include <iostream>
 
 sf::Sprite Ally::getSprite()
@@ -46,7 +47,7 @@ void Ally::move()
     }
 }
 
-void Ally::attack()
+void Ally::attack(std::vector<Enemy>* enemyVector)
 {
     if (this->life > 0)
     {
@@ -147,6 +148,7 @@ void Ally::loadPickedTexture(int pickedCharacter)
 
 void Ally::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip)
 {
+    this->animationInterval();
     if (*deltaTime >= *deltaTimeMax)
     {
         if (*clip < 11)
@@ -164,7 +166,7 @@ void Ally::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTi
             if (&this->clipDead == clip)
             {
                 this->deadAnimation = false;
-                this->endRound = true;
+                this->endGame = true;
             }
         }
         *deltaTime = 0.0f;
@@ -175,7 +177,7 @@ void Ally::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTi
 
 void Ally::animationInterval()
 {
-    float clockLaps = clock.restart().asSeconds();
+    float clockLaps = this->clock.restart().asSeconds();
     this->deltaTimeMove += clockLaps;
     this->pauseTimeMove += clockLaps;
     this->deltaTimeAttack += clockLaps;

@@ -12,6 +12,9 @@
 #include "Backslider3.h"
 #include "Player.h"
 #include "Game.h"
+#include "Enemy.h"
+#include "Satyr1.h"
+#include "Collision.h"
 
 int main()
 {
@@ -35,14 +38,13 @@ int main()
     Player* player = new Player();
     Shop* shop = new Shop(&menu->menuFont,&allyVector,player);
 
-    Game* game = new Game(&menu->menuFont,&shop->pickedCharacter,backslider1, backslider2, backslider3);
+    Satyr1* satyr1 = new Satyr1();
+    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3);
+    game->enemyVector.push_back(*satyr1);
 
     while (window.isOpen())
     {
         menu->animationInterval();
-        backslider1->animationInterval();
-        backslider2->animationInterval();
-        backslider3->animationInterval();
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -64,6 +66,7 @@ int main()
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
                     delete game;
                     game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3);
+                    game->enemyVector.push_back(*satyr1);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
@@ -94,11 +97,11 @@ int main()
             {
                 if (game)
                 {
-                    if (event.key.code == sf::Keyboard::Escape && game->isGameOpen && game->isGamePaused == false)
+                    if (event.key.code == sf::Keyboard::Escape && game->isGameOpen && game->isGamePaused == false && game->isGameEnded == false && game->isRoundEnded == false)
                     {
                         game->isGamePaused = true;
                     }
-                    if (event.key.code == sf::Keyboard::Space && game->isGameOpen && game->isGamePaused == false)
+                    if (event.key.code == sf::Keyboard::Space && game->isGameOpen && game->isGamePaused == false && game->isGameEnded == false && game->isRoundEnded == false)
                     {
                         if (game->pickedCharacter == 0)
                         {
@@ -124,6 +127,36 @@ int main()
 
         if (game->isGameOpen)
         {
+            if (game->enemyVector.size() > 0 && game->isGamePaused == false && game->isGameEnded == false && game->isRoundEnded == false)
+            {
+                for (int i = 0; i < game->enemyVector.size(); i++)
+                {   
+                    if (game->enemyVector[i].life > 0)
+                    {
+                        if (Collision::PixelPerfectTest(game->enemyVector[i].enemySprite, game->backslider1->playerSprite) && game->enemyVector[i].pauseTimeAttack >= 1.0f)
+                        {
+                            game->enemyVector[i].attackAnimation = true;
+                            if (game->pickedCharacter == 0)
+                            {
+                                game->enemyVector[i].attack(game->backslider1);
+                            }
+                            else if (game->pickedCharacter == 1)
+                            {
+                                game->enemyVector[i].attack(game->backslider2);
+                            }
+                            else if (game->pickedCharacter == 2)
+                            {
+                                game->enemyVector[i].attack(game->backslider3);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        game->enemyVector[i].deadAnimation = true;
+                        game->enemyVector[i].dead();
+                    }
+                }
+            }
             menu->musicTheme.stop();
             if (game->pickedCharacter == 0)
             {
@@ -131,17 +164,17 @@ int main()
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider1->life <= 0 && game->isRoundEnded == false)
+                else if (game->backslider1->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     game->backslider1->deadAnimation = true;
                     game->backslider1->dead();
-                    if (game->backslider1->endRound)
+                    if (game->backslider1->endGame)
                     {
-                        game->isRoundEnded = true;
+                        game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider1->life <= 0 && game->isRoundEnded == true)
+                else if (game->backslider1->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider1;
                     backslider1 = new Backslider1();
@@ -156,17 +189,17 @@ int main()
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider2->life <= 0 && game->isRoundEnded == false)
+                else if (game->backslider2->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     game->backslider2->deadAnimation = true;
                     game->backslider2->dead();
-                    if (game->backslider2->endRound)
+                    if (game->backslider2->endGame)
                     {
-                        game->isRoundEnded = true;
+                        game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider2->life <= 0 && game->isRoundEnded == true)
+                else if (game->backslider2->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider2;
                     backslider2 = new Backslider2();
@@ -181,17 +214,17 @@ int main()
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider3->life <= 0 && game->isRoundEnded == false)
+                else if (game->backslider3->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     game->backslider3->deadAnimation = true;
                     game->backslider3->dead();
-                    if (game->backslider3->endRound)
+                    if (game->backslider3->endGame)
                     {
-                        game->isRoundEnded = true;
+                        game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider3->life <= 0 && game->isRoundEnded == true)
+                else if (game->backslider3->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider3;
                     backslider3 = new Backslider3();

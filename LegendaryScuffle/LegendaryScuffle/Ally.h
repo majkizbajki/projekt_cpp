@@ -21,7 +21,7 @@ public:
 	double superPower;
 
 	void move();
-	void attack();
+	void attack(std::vector<Enemy>* enemyVector);
 	void dead();
 	void loadPickedTexture(int pickedCharacter);
 	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);
@@ -39,7 +39,7 @@ public:
 	// Animation
 	bool attackAnimation = false;
 	bool deadAnimation = false;
-	bool endRound = false;
+	bool endGame = false;
 
 protected:
 	sf::Sprite shopSprite;

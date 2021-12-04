@@ -6,18 +6,22 @@
 #include "Backslider1.h"
 #include "Backslider2.h"
 #include "Backslider3.h"
+#include "Enemy.h"
 
 class Game
 {
 public:
 	bool isGameOpen;
 	bool isGamePaused;
+	bool isGameEnded;
 	bool isRoundEnded;
-	
+	int round = 1;
+
 	short pickedCharacter;
 	Backslider1* backslider1;
 	Backslider2* backslider2;
 	Backslider3* backslider3;
+	std::vector<Enemy> enemyVector;
 
 	Game(sf::Font* menuFont,short* pickedCharacter, Backslider1* backslider1, Backslider2* backslider2, Backslider3* backslider3);
 
