@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, Backslider2* backslider2, Backslider3* backslider3)
+Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, Backslider2* backslider2, Backslider3* backslider3, std::vector<Enemy>* enemyVector)
 {
 	this->isGameOpen = false;
     this->isGamePaused = false;
@@ -34,6 +34,8 @@ Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, 
     this->backslider1 = backslider1;
     this->backslider2 = backslider2;
     this->backslider3 = backslider3;
+
+    this->enemyVector = enemyVector;
 }
 
 void Game::openGame(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
@@ -108,51 +110,54 @@ void Game::drawGame(sf::RenderWindow* window)
     }
     else
     {
-        if (this->enemyVector.size() > 0)
+        if (this->enemyVector->size() > 0)
         {
-            for (int i = 0; i < this->enemyVector.size(); i++)
+            for (int i = 0; i < this->enemyVector->size(); i++)
             {
-                if (this->pickedCharacter == 0)
+                if (this->enemyVector->at(i).endRound == false)
                 {
-                    this->enemyVector[i].move(this->backslider1);
-                    this->enemyVector[i].attack(this->backslider1);
+                    if (this->pickedCharacter == 0)
+                    {
+                        this->enemyVector->at(i).move(this->backslider1);
+                        this->enemyVector->at(i).attack(this->backslider1);
+                    }
+                    else if (this->pickedCharacter == 1)
+                    {
+                        this->enemyVector->at(i).move(this->backslider2);
+                        this->enemyVector->at(i).attack(this->backslider2);
+                    }
+                    else if (this->pickedCharacter == 2)
+                    {
+                        this->enemyVector->at(i).move(this->backslider3);
+                        this->enemyVector->at(i).attack(this->backslider3);
+                    }
+                    window->draw(this->enemyVector->at(i).enemySprite);
                 }
-                else if (this->pickedCharacter == 1)
-                {
-                    this->enemyVector[i].move(this->backslider2);
-                    this->enemyVector[i].attack(this->backslider2);
-                }
-                else if (this->pickedCharacter == 2)
-                {
-                    this->enemyVector[i].move(this->backslider3);
-                    this->enemyVector[i].attack(this->backslider3);
-                }
-                window->draw(this->enemyVector[i].enemySprite);
             }
         }
         if (this->pickedCharacter == 0)
         {
             this->backslider1->move();
-            this->backslider1->attack();
+            this->backslider1->attack(this->enemyVector);
             window->draw(this->backslider1->playerSprite);
         }
         else if (this->pickedCharacter == 1 && this->backslider2->isUnlocked)
         {
             this->backslider2->move();
-            this->backslider2->attack();
+            this->backslider2->attack(this->enemyVector);
             window->draw(this->backslider2->playerSprite);
         }
         else if (this->pickedCharacter == 2 && this->backslider3->isUnlocked)
         {
             this->backslider3->move();
-            this->backslider3->attack();
+            this->backslider3->attack(this->enemyVector);
             window->draw(this->backslider3->playerSprite);
         }
         else
         {
             this->pickedCharacter = 0;
             this->backslider1->move();
-            this->backslider1->attack();
+            this->backslider1->attack(this->enemyVector);
             window->draw(this->backslider1->playerSprite);
         }
     }

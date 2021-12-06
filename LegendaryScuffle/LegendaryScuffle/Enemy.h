@@ -1,14 +1,14 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "Character.h"
 #include "Ally.h"
 
 class Enemy : public Character
 {
 public:
-	int level;
-	float life;
-	float power;
+	short type; // 0 - power, 1 - magic
 
+	Enemy();
 	void move(Ally* player);
 	void attack(Ally* player);
 	void dead();
@@ -16,6 +16,7 @@ public:
 	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip, Ally* player);
 	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);
 	void animationInterval();
+	~Enemy();
 
 	// Texture
 	std::vector<sf::Texture> enemyMoveTexture;

@@ -1,10 +1,13 @@
 #include "Ally.h"
 #include "Enemy.h"
-#include <iostream>
 
 sf::Sprite Ally::getSprite()
 {
 	return this->shopSprite;
+}
+
+Ally::Ally()
+{
 }
 
 void Ally::move()
@@ -16,7 +19,7 @@ void Ally::move()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
                 this->playerSprite.move(sf::Vector2f(0, -3));
-                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
@@ -25,13 +28,13 @@ void Ally::move()
                     this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x + this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
                 }
                 this->playerSprite.move(sf::Vector2f(-3, 0));
-                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
                 this->playerSprite.setScale(-0.25, 0.25);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             {
                 this->playerSprite.move(sf::Vector2f(0, 3));
-                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
@@ -40,7 +43,7 @@ void Ally::move()
                     this->playerSprite.setPosition(sf::Vector2f(this->playerSprite.getPosition().x - this->playerSprite.getGlobalBounds().width, this->playerSprite.getPosition().y));
                 }
                 this->playerSprite.move(sf::Vector2f(3, 0));
-                this->updateTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
+                this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
                 this->playerSprite.setScale(0.25, 0.25);
             }
         }
@@ -54,26 +57,26 @@ void Ally::attack(std::vector<Enemy>* enemyVector)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->attackAnimation == true)
         {
             this->playerSprite.move(sf::Vector2f(0, -3));
-            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+            this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->attackAnimation == true)
         {
             this->playerSprite.move(sf::Vector2f(-3, 0));
-            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+            this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->attackAnimation == true)
         {
             this->playerSprite.move(sf::Vector2f(0, 3));
-            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+            this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->attackAnimation == true)
         {
             this->playerSprite.move(sf::Vector2f(3, 0));
-            this->updateTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+            this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
         else if (this->attackAnimation == true)
         {
-            this->updateTexture(&this->playerStaticAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack);
+            this->updatePlayerTexture(&this->playerStaticAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
     }
 }
@@ -82,7 +85,7 @@ void Ally::dead()
 {
     if (this->life <= 0 && this->deadAnimation == true)
     {
-        this->updateTexture(&this->playerDeadTexture, &this->deltaTimeDead, &this->deltaTimeMaxDead, &this->pauseTimeDead, &this->clipDead);
+        this->updatePlayerTexture(&this->playerDeadTexture, &this->deltaTimeDead, &this->deltaTimeMaxDead, &this->pauseTimeDead, &this->clipDead);
     }
 }
 
@@ -146,7 +149,43 @@ void Ally::loadPickedTexture(int pickedCharacter)
     this->playerSprite.setPosition(sf::Vector2f(0.1 * this->desktopSize.width, 0.45 * this->desktopSize.height));
 }
 
-void Ally::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip)
+void Ally::updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip, std::vector<Enemy>* enemyVector)
+{
+    this->animationInterval();
+    if (*deltaTime >= *deltaTimeMax)
+    {
+        if (*clip < 11)
+        {
+            *clip += 1;
+        }
+        else
+        {
+            *pauseTime = 0.0f;
+            *clip = 0;
+            if (&this->clipAttack == clip)
+            {
+                this->attackAnimation = false;
+                for (int i = 0; i < enemyVector->size(); i++)
+                {
+                    if (Collision::PixelPerfectTest(this->playerSprite, enemyVector->at(i).enemySprite))
+                    {
+                        enemyVector->at(i).life -= this->power;
+                    }
+                }
+            }
+            if (&this->clipDead == clip)
+            {
+                this->deadAnimation = false;
+                this->endGame = true;
+            }
+        }
+        *deltaTime = 0.0f;
+
+        this->playerSprite.setTexture(textureVector->at(*clip));
+    }
+}
+
+void Ally::updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip)
 {
     this->animationInterval();
     if (*deltaTime >= *deltaTimeMax)
@@ -184,4 +223,8 @@ void Ally::animationInterval()
     this->pauseTimeAttack += clockLaps;
     this->deltaTimeDead += clockLaps;
     this->pauseTimeDead += clockLaps;
+}
+
+Ally::~Ally()
+{
 }

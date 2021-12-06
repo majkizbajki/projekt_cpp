@@ -38,9 +38,13 @@ int main()
     Player* player = new Player();
     Shop* shop = new Shop(&menu->menuFont,&allyVector,player);
 
+    // This will be made by round generator
     Satyr1* satyr1 = new Satyr1();
-    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3);
-    game->enemyVector.push_back(*satyr1);
+    std::vector<Enemy> enemyVector;
+    enemyVector.push_back(*satyr1);
+    //
+
+    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&enemyVector);
 
     while (window.isOpen())
     {
@@ -65,8 +69,7 @@ int main()
                     rules->openRules(&menu->rulesButton, &window, &menu->isMenuWindowOpen);
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
                     delete game;
-                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3);
-                    game->enemyVector.push_back(*satyr1);
+                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&enemyVector);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
@@ -127,37 +130,67 @@ int main()
 
         if (game->isGameOpen)
         {
-            if (game->enemyVector.size() > 0 && game->isGamePaused == false && game->isGameEnded == false && game->isRoundEnded == false)
+            menu->musicTheme.stop();
+            
+            if (game->enemyVector->size() > 0)
             {
-                for (int i = 0; i < game->enemyVector.size(); i++)
-                {   
-                    if (game->enemyVector[i].life > 0)
+                bool isRoundEnded = true;
+                if (game->isGamePaused == false && game->isGameEnded == false && game->isRoundEnded == false)
+                {
+                    for (int i = 0; i < game->enemyVector->size(); i++)
                     {
-                        if (Collision::PixelPerfectTest(game->enemyVector[i].enemySprite, game->backslider1->playerSprite) && game->enemyVector[i].pauseTimeAttack >= 1.0f)
+                        if (game->enemyVector->at(i).endRound == false)
                         {
-                            game->enemyVector[i].attackAnimation = true;
-                            if (game->pickedCharacter == 0)
+                            if (game->enemyVector->at(i).life > 0)
                             {
-                                game->enemyVector[i].attack(game->backslider1);
+                                if (Collision::PixelPerfectTest(game->enemyVector->at(i).enemySprite, game->backslider1->playerSprite) && game->enemyVector->at(i).pauseTimeAttack >= 1.0f)
+                                {
+                                    game->enemyVector->at(i).attackAnimation = true;
+                                    if (game->pickedCharacter == 0)
+                                    {
+                                        game->enemyVector->at(i).attack(game->backslider1);
+                                    }
+                                    else if (game->pickedCharacter == 1)
+                                    {
+                                        game->enemyVector->at(i).attack(game->backslider2);
+                                    }
+                                    else if (game->pickedCharacter == 2)
+                                    {
+                                        game->enemyVector->at(i).attack(game->backslider3);
+                                    }
+                                }
                             }
-                            else if (game->pickedCharacter == 1)
+                            else
                             {
-                                game->enemyVector[i].attack(game->backslider2);
-                            }
-                            else if (game->pickedCharacter == 2)
-                            {
-                                game->enemyVector[i].attack(game->backslider3);
+                                game->enemyVector->at(i).deadAnimation = true;
+                                game->enemyVector->at(i).dead();
                             }
                         }
                     }
-                    else
+                }
+
+                for (int i = 0; i < game->enemyVector->size(); i++)
+                {
+                    if (game->enemyVector->at(i).endRound == false)
                     {
-                        game->enemyVector[i].deadAnimation = true;
-                        game->enemyVector[i].dead();
+                        isRoundEnded = false;
+                        break;
                     }
                 }
+
+                if (isRoundEnded)
+                {
+                    game->enemyVector->clear();
+                }
             }
-            menu->musicTheme.stop();
+            else
+            {
+                //game->isRoundEnded = true;
+                game->isGameOpen = false;
+                game->isGamePaused = false;
+                menu->isMenuWindowOpen = true;
+            }
+
             if (game->pickedCharacter == 0)
             {
                 if (game->backslider1->life > 0)

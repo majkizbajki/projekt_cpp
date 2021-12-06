@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Character.h"
+#include "Collision.h"
+class Enemy;
 
 class Ally : public Character
 {
@@ -20,12 +22,15 @@ public:
 	double armor;
 	double superPower;
 
+	Ally();
 	void move();
 	void attack(std::vector<Enemy>* enemyVector);
 	void dead();
 	void loadPickedTexture(int pickedCharacter);
-	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);
+	void updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip, std::vector<Enemy>* enemyVector);
+	void updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);
 	void animationInterval();
+	~Ally();
 
 	// Texture
 	std::vector<sf::Texture> playerMoveTexture;

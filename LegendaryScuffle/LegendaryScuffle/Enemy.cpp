@@ -1,5 +1,8 @@
 #include "Enemy.h"
-#include <iostream>
+
+Enemy::Enemy()
+{
+}
 
 void Enemy::move(Ally* player)
 {
@@ -129,12 +132,24 @@ void Enemy::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaT
             if (&this->clipAttack == clip)
             {
                 this->attackAnimation = false;
-                player->life -= this->power;
+                if (this->type == 0)
+                {
+                    if (this->power - player->armor > 0)
+                    {
+                        player->life -= (this->power - player->armor);
+                    }
+                }
+                else if (this->type == 1)
+                {
+                    if (this->power - player->magicResist > 0)
+                    {
+                        player->life -= (this->power - player->magicResist);
+                    }
+                }
             }
             if (&this->clipDead == clip)
             {
                 this->deadAnimation = false;
-                this->endRound = true;
             }
         }
         *deltaTime = 0.0f;
@@ -156,10 +171,6 @@ void Enemy::updateTexture(std::vector<sf::Texture>* textureVector, float* deltaT
         {
             *pauseTime = 0.0f;
             *clip = 0;
-            if (&this->clipAttack == clip)
-            {
-                this->attackAnimation = false;
-            }
             if (&this->clipDead == clip)
             {
                 this->deadAnimation = false;
@@ -181,4 +192,8 @@ void Enemy::animationInterval()
     this->pauseTimeAttack += clockLaps;
     this->deltaTimeDead += clockLaps;
     this->pauseTimeDead += clockLaps;
+}
+
+Enemy::~Enemy()
+{
 }
