@@ -22,7 +22,6 @@ public:
 	double armor;
 	double superPower;
 
-	Ally();
 	void move();
 	void attack(std::vector<Enemy>* enemyVector);
 	void dead();

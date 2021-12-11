@@ -7,8 +7,8 @@ class Enemy : public Character
 {
 public:
 	short type; // 0 - power, 1 - magic
+	float moveSpeed;
 
-	Enemy();
 	void move(Ally* player);
 	void attack(Ally* player);
 	void dead();
@@ -16,7 +16,6 @@ public:
 	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip, Ally* player);
 	void updateTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);
 	void animationInterval();
-	~Enemy();
 
 	// Texture
 	std::vector<sf::Texture> enemyMoveTexture;

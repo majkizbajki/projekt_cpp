@@ -1,45 +1,41 @@
 #include "Enemy.h"
 
-Enemy::Enemy()
-{
-}
-
 void Enemy::move(Ally* player)
 {
     if (this->life > 0)
     {
         if (this->attackAnimation == false)
         {
-            float playerX = player->playerSprite.getGlobalBounds().left + player->playerSprite.getGlobalBounds().width / 2;
-            float playerY = player->playerSprite.getGlobalBounds().top + player->playerSprite.getGlobalBounds().height / 2;
+            float playerX = player->playerSprite.getGlobalBounds().left + player->playerSprite.getGlobalBounds().width / 2 + 15;
+            float playerY = player->playerSprite.getGlobalBounds().top + player->playerSprite.getGlobalBounds().height / 2 + 15;
             float enemyX = this->enemySprite.getGlobalBounds().left + this->enemySprite.getGlobalBounds().width / 2;
             float enemyY = this->enemySprite.getGlobalBounds().top + this->enemySprite.getGlobalBounds().height / 2;
 
-            if (playerX < enemyX)
+            if (playerX <= enemyX && !Collision::PixelPerfectTest(player->playerSprite,this->enemySprite))
             {
-                this->enemySprite.move(sf::Vector2f(-1.5,0));
+                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed,0));
                 if (this->enemySprite.getScale().x > 0)
                 {
                     this->enemySprite.setScale(-0.45, 0.45);
                     this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x + this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
                 }
             }
-            if (playerX > enemyX)
+            if (playerX > enemyX && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
             {
-                this->enemySprite.move(sf::Vector2f(1.5, 0));
+                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
                 if (this->enemySprite.getScale().x < 0)
                 {
                     this->enemySprite.setScale(0.45, 0.45);
                     this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x - this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
                 }
             }
-            if (playerY < enemyY)
+            if (playerY <= enemyY && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
             {
-                this->enemySprite.move(sf::Vector2f(0, -1.5));
+                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
             }
-            if (playerY > enemyY)
+            if (playerY > enemyY && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
             {
-                this->enemySprite.move(sf::Vector2f(0, 1.5));
+                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
             }
 
             this->updateTexture(&this->enemyMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove, player);
@@ -192,8 +188,4 @@ void Enemy::animationInterval()
     this->pauseTimeAttack += clockLaps;
     this->deltaTimeDead += clockLaps;
     this->pauseTimeDead += clockLaps;
-}
-
-Enemy::~Enemy()
-{
 }

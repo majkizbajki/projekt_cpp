@@ -2,5 +2,5 @@
 
 Player::Player()
 {
-	this->money = 0;
+	this->money = 1000;
 }

@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include <iostream>
 Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, Backslider2* backslider2, Backslider3* backslider3, std::vector<Enemy>* enemyVector)
 {
 	this->isGameOpen = false;
@@ -40,6 +40,10 @@ Game::Game(sf::Font* menuFont, short* pickedCharacter,Backslider1* backslider1, 
 
 void Game::openGame(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
 {
+    this->backslider1->playerSprite.setPosition(sf::Vector2f(192, 486));
+    this->backslider2->playerSprite.setPosition(sf::Vector2f(192, 486));
+    this->backslider3->playerSprite.setPosition(sf::Vector2f(192, 486));
+
     float buttonX = button->getPosition().x;
     float buttonY = button->getPosition().y;
     float buttonWidth = button->getGlobalBounds().width;

@@ -162,8 +162,11 @@
     <ClCompile Include="LegendaryScuffle.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Round.cpp" />
     <ClCompile Include="Rules.cpp" />
     <ClCompile Include="Satyr1.cpp" />
+    <ClCompile Include="Satyr2.cpp" />
+    <ClCompile Include="Satyr3.cpp" />
     <ClCompile Include="Shop.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,8 +180,11 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Round.h" />
     <ClInclude Include="Rules.h" />
     <ClInclude Include="Satyr1.h" />
+    <ClInclude Include="Satyr2.h" />
+    <ClInclude Include="Satyr3.h" />
     <ClInclude Include="Shop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -14,7 +14,10 @@
 #include "Game.h"
 #include "Enemy.h"
 #include "Satyr1.h"
+#include "Satyr2.h"
+#include "Satyr3.h"
 #include "Collision.h"
+#include "Round.h"
 
 int main()
 {
@@ -38,13 +41,9 @@ int main()
     Player* player = new Player();
     Shop* shop = new Shop(&menu->menuFont,&allyVector,player);
 
-    // This will be made by round generator
-    Satyr1* satyr1 = new Satyr1();
-    std::vector<Enemy> enemyVector;
-    enemyVector.push_back(*satyr1);
-    //
+    Round* gameRound = new Round();
 
-    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&enemyVector);
+    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&gameRound->enemyVector);
 
     while (window.isOpen())
     {
@@ -68,8 +67,20 @@ int main()
                     menu->playPauseMusic();
                     rules->openRules(&menu->rulesButton, &window, &menu->isMenuWindowOpen);
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
+                    
                     delete game;
-                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&enemyVector);
+
+                    // Enemy reset
+                    delete gameRound;
+                    gameRound = new Round();
+                    gameRound->generateRound();
+
+                    for (int i = 0; i < allyVector.size(); i++)
+                    {
+                        allyVector[i].playerSprite.setPosition(sf::Vector2f(0.1 * desktopSize.width, 0.45 * desktopSize.height));
+                    }
+                    
+                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&gameRound->enemyVector);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else

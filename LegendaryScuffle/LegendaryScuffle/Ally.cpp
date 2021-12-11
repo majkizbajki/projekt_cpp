@@ -6,22 +6,43 @@ sf::Sprite Ally::getSprite()
 	return this->shopSprite;
 }
 
-Ally::Ally()
-{
-}
-
 void Ally::move()
 {
     if (this->life > 0)
     {
+        float positionX1 = this->playerSprite.getGlobalBounds().left;
+        float positionY1 = this->playerSprite.getGlobalBounds().top;
+        float positionX2 = this->playerSprite.getGlobalBounds().width;
+        float positionY2 = this->playerSprite.getGlobalBounds().height;
+        bool goUp = true;
+        bool goDown = true;
+        bool goLeft = true;
+        bool goRight = true;
+        if (positionX1 <= -60)
+        {
+            goLeft = false;
+        }
+        if (positionY1 <= -45)
+        {
+            goUp = false;
+        }
+        if (positionX2 >= 1920)
+        {
+            goRight = false;
+        }
+        if (positionY2 >= 1080)
+        {
+            goDown = false;
+        }
+
         if (this->attackAnimation == false)
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && goUp)
             {
                 this->playerSprite.move(sf::Vector2f(0, -3));
                 this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && goLeft)
             {
                 if (this->playerSprite.getScale().x > 0)
                 {
@@ -31,12 +52,12 @@ void Ally::move()
                 this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
                 this->playerSprite.setScale(-0.25, 0.25);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && goDown)
             {
                 this->playerSprite.move(sf::Vector2f(0, 3));
                 this->updatePlayerTexture(&this->playerMoveTexture, &this->deltaTimeMove, &this->deltaTimeMaxMove, &this->pauseTimeMove, &this->clipMove);
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && goRight)
             {
                 if (this->playerSprite.getScale().x < 0)
                 {
