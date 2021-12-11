@@ -43,7 +43,7 @@ int main()
 
     Round* gameRound = new Round();
 
-    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&gameRound->enemyVector);
+    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector,&gameRound->enemyVector);
 
     while (window.isOpen())
     {
@@ -70,7 +70,12 @@ int main()
                     
                     delete game;
 
-                    // Enemy reset
+                    for (int i = 0; i < allyVector.size(); i++)
+                    {
+                        allyVector[i].setStatistics(i);
+                    }
+
+                    // Round reset
                     delete gameRound;
                     gameRound = new Round();
                     gameRound->generateRound();
@@ -80,7 +85,7 @@ int main()
                         allyVector[i].playerSprite.setPosition(sf::Vector2f(0.1 * desktopSize.width, 0.45 * desktopSize.height));
                     }
                     
-                    game = new Game(&menu->menuFont, &shop->pickedCharacter, backslider1, backslider2, backslider3,&gameRound->enemyVector);
+                    game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector,&gameRound->enemyVector);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
@@ -100,7 +105,7 @@ int main()
                         {
                             if (game->isGamePaused)
                             {
-                                game->closeGame(&menu->isMenuWindowOpen, &menu->musicTheme);
+                                game->closeGame(&menu->isMenuWindowOpen,&menu->musicTheme);
                                 game->continueGame();
                             }
                         }
@@ -119,15 +124,15 @@ int main()
                     {
                         if (game->pickedCharacter == 0)
                         {
-                            game->backslider1->attackAnimation = true;
+                            game->allyVector->at(0).attackAnimation = true;
                         }
                         else if (game->pickedCharacter == 1)
                         {
-                            game->backslider2->attackAnimation = true;
+                            game->allyVector->at(1).attackAnimation = true;
                         }
                         else if (game->pickedCharacter == 2)
                         {
-                            game->backslider3->attackAnimation = true;
+                            game->allyVector->at(2).attackAnimation = true;
                         }
                     }
                 }
@@ -154,20 +159,20 @@ int main()
                         {
                             if (game->enemyVector->at(i).life > 0)
                             {
-                                if (Collision::PixelPerfectTest(game->enemyVector->at(i).enemySprite, game->backslider1->playerSprite) && game->enemyVector->at(i).pauseTimeAttack >= 1.0f)
+                                if (Collision::PixelPerfectTest(game->enemyVector->at(i).enemySprite, game->allyVector->at(0).playerSprite) && game->enemyVector->at(i).pauseTimeAttack >= 1.0f)
                                 {
                                     game->enemyVector->at(i).attackAnimation = true;
                                     if (game->pickedCharacter == 0)
                                     {
-                                        game->enemyVector->at(i).attack(game->backslider1);
+                                        game->enemyVector->at(i).attack(&game->allyVector->at(0));
                                     }
                                     else if (game->pickedCharacter == 1)
                                     {
-                                        game->enemyVector->at(i).attack(game->backslider2);
+                                        game->enemyVector->at(i).attack(&game->allyVector->at(1));
                                     }
                                     else if (game->pickedCharacter == 2)
                                     {
-                                        game->enemyVector->at(i).attack(game->backslider3);
+                                        game->enemyVector->at(i).attack(&game->allyVector->at(2));
                                     }
                                 }
                             }
@@ -204,21 +209,21 @@ int main()
 
             if (game->pickedCharacter == 0)
             {
-                if (game->backslider1->life > 0)
+                if (game->allyVector->at(0).life > 0)
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider1->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(0).life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
-                    game->backslider1->deadAnimation = true;
-                    game->backslider1->dead();
-                    if (game->backslider1->endGame)
+                    game->allyVector->at(0).deadAnimation = true;
+                    game->allyVector->at(0).dead();
+                    if (game->allyVector->at(0).endGame)
                     {
                         game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider1->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(0).life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider1;
                     backslider1 = new Backslider1();
@@ -229,21 +234,21 @@ int main()
             }
             else if (game->pickedCharacter == 1)
             {
-                if (game->backslider2->life > 0)
+                if (game->allyVector->at(1).life > 0)
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider2->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(1).life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
-                    game->backslider2->deadAnimation = true;
-                    game->backslider2->dead();
-                    if (game->backslider2->endGame)
+                    game->allyVector->at(1).deadAnimation = true;
+                    game->allyVector->at(1).dead();
+                    if (game->allyVector->at(1).endGame)
                     {
                         game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider2->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(1).life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider2;
                     backslider2 = new Backslider2();
@@ -254,21 +259,21 @@ int main()
             }
             else if (game->pickedCharacter == 2)
             {
-                if (game->backslider3->life > 0)
+                if (game->allyVector->at(2).life > 0)
                 {
                     game->drawGame(&window);
                 }
-                else if (game->backslider3->life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(2).life <= 0 && game->isGameEnded == false && game->isGamePaused == false && game->isRoundEnded == false)
                 {
-                    game->backslider3->deadAnimation = true;
-                    game->backslider3->dead();
-                    if (game->backslider3->endGame)
+                    game->allyVector->at(2).deadAnimation = true;
+                    game->allyVector->at(2).dead();
+                    if (game->allyVector->at(2).endGame)
                     {
                         game->isGameEnded = true;
                     }
                     game->drawGame(&window);
                 }
-                else if (game->backslider3->life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
+                else if (game->allyVector->at(2).life <= 0 && game->isGameEnded == true && game->isGamePaused == false && game->isRoundEnded == false)
                 {
                     delete backslider3;
                     backslider3 = new Backslider3();

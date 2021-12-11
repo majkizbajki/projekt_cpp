@@ -110,6 +110,34 @@ void Ally::dead()
     }
 }
 
+void Ally::setStatistics(int pickedCharacter)
+{
+    if (pickedCharacter == 0)
+    {
+        this->armor = 10.0;
+        this->life = 100.0;
+        this->magicResist = 10.0;
+        this->power = 10.0;
+        this->superPower = 1.0;
+    }
+    else if (pickedCharacter == 1)
+    {
+        this->armor = 25.0;
+        this->life = 1000.0;
+        this->magicResist = 25.0;
+        this->power = 50.0;
+        this->superPower = 1.0;
+    }
+    else if (pickedCharacter == 2)
+    {
+        this->armor = 50.0;
+        this->life = 5000.0;
+        this->magicResist = 50.0;
+        this->power = 100.0;
+        this->superPower = 1.0;
+    }
+}
+
 void Ally::loadPickedTexture(int pickedCharacter)
 {
     // Player textures

@@ -25,6 +25,7 @@ public:
 	void move();
 	void attack(std::vector<Enemy>* enemyVector);
 	void dead();
+	void setStatistics(int pickedCharacter);
 	void loadPickedTexture(int pickedCharacter);
 	void updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip, std::vector<Enemy>* enemyVector);
 	void updatePlayerTexture(std::vector<sf::Texture>* textureVector, float* deltaTime, const float* deltaTimeMax, float* pauseTime, int* clip);

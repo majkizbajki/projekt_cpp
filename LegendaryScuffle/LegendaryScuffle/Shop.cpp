@@ -558,7 +558,10 @@ void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* 
     {
         this->isShopOpen = true;
         *isMenuWindowOpen = false;
-
+        for (int i = 0; i < this->allyVector->size(); i++)
+        {
+            this->allyVector->at(i).setStatistics(i);
+        }
         this->drawShop(window);
     }
 }

@@ -2,12 +2,6 @@
 
 Backslider1::Backslider1()
 {
-	this->armor = 10.0;
-	this->life = 100.0;
-	this->magicResist = 10.0;
-	this->power = 10.0;
-	this->superPower = 1.0;
-
 	// Shop
 	this->isUnlocked = true;
 	this->armorLevel = 1;

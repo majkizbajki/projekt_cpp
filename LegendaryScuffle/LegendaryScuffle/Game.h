@@ -18,12 +18,10 @@ public:
 	int round = 1;
 
 	short pickedCharacter;
-	Backslider1* backslider1;
-	Backslider2* backslider2;
-	Backslider3* backslider3;
+	std::vector<Ally>* allyVector;
 	std::vector<Enemy>* enemyVector;
 
-	Game(sf::Font* menuFont,short* pickedCharacter, Backslider1* backslider1, Backslider2* backslider2, Backslider3* backslider3, std::vector<Enemy>* enemyVector);
+	Game(sf::Font* menuFont,short* pickedCharacter, std::vector<Ally>* allyVector, std::vector<Enemy>* enemyVector);
 
 	void openGame(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen);
 	void closeGame(bool* isMenuWindowOpen, sf::Music* music);
