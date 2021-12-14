@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game(sf::Font* menuFont, short* pickedCharacter, std::vector<Ally>* allyVector, std::vector<Enemy>* enemyVector)
+Game::Game(sf::Font* menuFont, short* pickedCharacter, std::vector<Ally>* allyVector, std::vector<Enemy>* enemyVector, std::vector<sf::Sprite>* mapSprites)
 {
 	this->isGameOpen = false;
     this->isGamePaused = false;
@@ -35,6 +35,8 @@ Game::Game(sf::Font* menuFont, short* pickedCharacter, std::vector<Ally>* allyVe
     this->allyVector = allyVector;
 
     this->enemyVector = enemyVector;
+
+    this->mapSprites = mapSprites;
 }
 
 void Game::openGame(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen)
@@ -77,15 +79,7 @@ void Game::closeGame(bool* isMenuWindowOpen, sf::Music* music)
             this->isGameOpen = false;
             this->isGamePaused = false;
             *isMenuWindowOpen = true;
-            if (music->Paused || music->Stopped)
-            {
-                music->stop();
-            }
-            else
-            {
-                music->play();
-            }
-
+            music->setVolume(100);
         }
     }
 }
@@ -120,6 +114,10 @@ void Game::drawGame(sf::RenderWindow* window)
     }
     else
     {
+        for (int i = 0; i < mapSprites->size(); i++)
+        {
+            window->draw(mapSprites->at(i));
+        }
         if (this->enemyVector->size() > 0)
         {
             for (int i = 0; i < this->enemyVector->size(); i++)
@@ -128,17 +126,17 @@ void Game::drawGame(sf::RenderWindow* window)
                 {
                     if (this->pickedCharacter == 0)
                     {
-                        this->enemyVector->at(i).move(&this->allyVector->at(0));
+                        this->enemyVector->at(i).move(&this->allyVector->at(0),this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(0));
                     }
                     else if (this->pickedCharacter == 1)
                     {
-                        this->enemyVector->at(i).move(&this->allyVector->at(1));
+                        this->enemyVector->at(i).move(&this->allyVector->at(1), this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(1));
                     }
                     else if (this->pickedCharacter == 2)
                     {
-                        this->enemyVector->at(i).move(&this->allyVector->at(2));
+                        this->enemyVector->at(i).move(&this->allyVector->at(2), this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(2));
                     }
                     window->draw(this->enemyVector->at(i).enemySprite);
@@ -147,27 +145,28 @@ void Game::drawGame(sf::RenderWindow* window)
         }
         if (this->pickedCharacter == 0)
         {
-            this->allyVector->at(0).move();
-            this->allyVector->at(0).attack(this->enemyVector);
+            this->allyVector->at(0).move(this->mapSprites);
+            this->allyVector->at(0).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(0).playerSprite);
+            window->draw(this->allyVector->at(0).hpAmountText);
         }
         else if (this->pickedCharacter == 1 && this->allyVector->at(1).isUnlocked)
         {
-            this->allyVector->at(1).move();
-            this->allyVector->at(1).attack(this->enemyVector);
+            this->allyVector->at(1).move(this->mapSprites);
+            this->allyVector->at(1).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(1).playerSprite);
         }
         else if (this->pickedCharacter == 2 && this->allyVector->at(2).isUnlocked)
         {
-            this->allyVector->at(2).move();
-            this->allyVector->at(2).attack(this->enemyVector);
+            this->allyVector->at(2).move(this->mapSprites);
+            this->allyVector->at(2).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(2).playerSprite);
         }
         else
         {
             this->pickedCharacter = 0;
-            this->allyVector->at(0).move();
-            this->allyVector->at(0).attack(this->enemyVector);
+            this->allyVector->at(0).move(this->mapSprites);
+            this->allyVector->at(0).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(0).playerSprite);
         }
     }

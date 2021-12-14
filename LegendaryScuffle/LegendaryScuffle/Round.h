@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "Enemy.h"
 #include "Satyr1.h"
 #include "Satyr2.h"
@@ -12,6 +13,17 @@ public:
     Satyr3* satyr3 = new Satyr3();
     std::vector<Enemy> enemyVector;
     int round = 1;
+
+    // Textures
+    sf::Texture barrelsTexture;
+    sf::Texture fountainTexture;
+    sf::Texture treeTexture;
+    std::vector<sf::Texture> mapTextures;
+    // Sprites
+    sf::Sprite barrelsSprite;
+    sf::Sprite fountainSprite;
+    sf::Sprite treeSprite;
+    std::vector<sf::Sprite> mapSprites;
 
 	Round();
     void generateRound();

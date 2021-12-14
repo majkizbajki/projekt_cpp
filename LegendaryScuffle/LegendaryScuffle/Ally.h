@@ -22,8 +22,8 @@ public:
 	double armor;
 	double superPower;
 
-	void move();
-	void attack(std::vector<Enemy>* enemyVector);
+	void move(std::vector<sf::Sprite>* mapSprites);
+	void attack(std::vector<Enemy>* enemyVector, std::vector<sf::Sprite>* mapSprites);
 	void dead();
 	void setStatistics(int pickedCharacter);
 	void loadPickedTexture(int pickedCharacter);
@@ -40,6 +40,10 @@ public:
 
 	// Sprite
 	sf::Sprite playerSprite;
+
+	// HP info text
+	sf::Text hpAmountText;
+	sf::Font font;
 
 	// Animation
 	bool attackAnimation = false;

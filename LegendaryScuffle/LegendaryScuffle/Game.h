@@ -20,8 +20,8 @@ public:
 	short pickedCharacter;
 	std::vector<Ally>* allyVector;
 	std::vector<Enemy>* enemyVector;
-
-	Game(sf::Font* menuFont,short* pickedCharacter, std::vector<Ally>* allyVector, std::vector<Enemy>* enemyVector);
+	std::vector<sf::Sprite>* mapSprites;
+	Game(sf::Font* menuFont,short* pickedCharacter, std::vector<Ally>* allyVector, std::vector<Enemy>* enemyVector, std::vector<sf::Sprite>* mapSprites);
 
 	void openGame(sf::RectangleShape* button, sf::RenderWindow* window, bool* isMenuWindowOpen);
 	void closeGame(bool* isMenuWindowOpen, sf::Music* music);

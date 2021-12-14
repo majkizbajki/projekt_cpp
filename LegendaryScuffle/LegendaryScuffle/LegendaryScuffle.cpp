@@ -43,7 +43,7 @@ int main()
 
     Round* gameRound = new Round();
 
-    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector,&gameRound->enemyVector);
+    Game* game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector, &gameRound->enemyVector, &gameRound->mapSprites);
 
     while (window.isOpen())
     {
@@ -65,6 +65,7 @@ int main()
                 if (menu->isMenuWindowOpen)
                 {
                     menu->playPauseMusic();
+                    menu->musicTheme.setVolume(100);
                     rules->openRules(&menu->rulesButton, &window, &menu->isMenuWindowOpen);
                     shop->openShop(&menu->shopButton, &window, &menu->isMenuWindowOpen);
                     
@@ -74,7 +75,6 @@ int main()
                     {
                         allyVector[i].setStatistics(i);
                     }
-
                     // Round reset
                     delete gameRound;
                     gameRound = new Round();
@@ -85,7 +85,7 @@ int main()
                         allyVector[i].playerSprite.setPosition(sf::Vector2f(0.1 * desktopSize.width, 0.45 * desktopSize.height));
                     }
                     
-                    game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector,&gameRound->enemyVector);
+                    game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector,&gameRound->enemyVector,&gameRound->mapSprites);
                     game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
                 }
                 else
@@ -146,7 +146,7 @@ int main()
 
         if (game->isGameOpen)
         {
-            menu->musicTheme.stop();
+            menu->musicTheme.setVolume(0);
             
             if (game->enemyVector->size() > 0)
             {
@@ -205,6 +205,7 @@ int main()
                 game->isGameOpen = false;
                 game->isGamePaused = false;
                 menu->isMenuWindowOpen = true;
+                menu->musicTheme.setVolume(100);
             }
 
             if (game->pickedCharacter == 0)
@@ -230,6 +231,7 @@ int main()
                     game->isGameOpen = false;
                     game->isGamePaused = false;
                     menu->isMenuWindowOpen = true;
+                    menu->musicTheme.setVolume(100);
                 }
             }
             else if (game->pickedCharacter == 1)
@@ -255,6 +257,7 @@ int main()
                     game->isGameOpen = false;
                     game->isGamePaused = false;
                     menu->isMenuWindowOpen = true;
+                    menu->musicTheme.setVolume(100);
                 }
             }
             else if (game->pickedCharacter == 2)
@@ -280,6 +283,7 @@ int main()
                     game->isGameOpen = false;
                     game->isGamePaused = false;
                     menu->isMenuWindowOpen = true;
+                    menu->musicTheme.setVolume(100);
                 }
             }
         }

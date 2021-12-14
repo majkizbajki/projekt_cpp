@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.h"
 #include "Ally.h"
+#include <stdlib.h>
 
 class Enemy : public Character
 {
@@ -9,7 +10,7 @@ public:
 	short type; // 0 - power, 1 - magic
 	float moveSpeed;
 
-	void move(Ally* player);
+	void move(Ally* player, std::vector<sf::Sprite>* mapSprites);
 	void attack(Ally* player);
 	void dead();
 	void loadPickedTexture(int enemyType, int enemyID);
@@ -24,6 +25,9 @@ public:
 
 	// Sprite
 	sf::Sprite enemySprite;
+
+	// HP info text
+	sf::Text hpAmountText;
 
 	// Animation
 	bool attackAnimation = false;

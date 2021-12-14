@@ -6,14 +6,14 @@ sf::Sprite Ally::getSprite()
 	return this->shopSprite;
 }
 
-void Ally::move()
+void Ally::move(std::vector<sf::Sprite>* mapSprites)
 {
     if (this->life > 0)
     {
         float positionX1 = this->playerSprite.getGlobalBounds().left;
         float positionY1 = this->playerSprite.getGlobalBounds().top;
-        float positionX2 = this->playerSprite.getGlobalBounds().width;
-        float positionY2 = this->playerSprite.getGlobalBounds().height;
+        float positionX2 = this->playerSprite.getGlobalBounds().left + this->playerSprite.getGlobalBounds().width;
+        float positionY2 = this->playerSprite.getGlobalBounds().top + this->playerSprite.getGlobalBounds().height;
         bool goUp = true;
         bool goDown = true;
         bool goLeft = true;
@@ -26,13 +26,36 @@ void Ally::move()
         {
             goUp = false;
         }
-        if (positionX2 >= 1920)
+        if (positionX2 >= 1980)
         {
             goRight = false;
         }
         if (positionY2 >= 1080)
         {
             goDown = false;
+        }
+
+        for (int i = 0; i < mapSprites->size(); i++)
+        {
+            if (Collision::PixelPerfectTest(this->playerSprite, mapSprites->at(i)))
+            {
+                if (this->playerSprite.getGlobalBounds().left < mapSprites->at(i).getGlobalBounds().left)
+                {
+                    goRight = false;
+                }
+                if (this->playerSprite.getGlobalBounds().left > mapSprites->at(i).getGlobalBounds().left)
+                {
+                    goLeft = false;
+                }
+                if (this->playerSprite.getGlobalBounds().top < mapSprites->at(i).getGlobalBounds().top)
+                {
+                    goDown = false;
+                }
+                if (this->playerSprite.getGlobalBounds().top > mapSprites->at(i).getGlobalBounds().top)
+                {
+                    goUp = false;
+                }
+            }
         }
 
         if (this->attackAnimation == false)
@@ -71,26 +94,74 @@ void Ally::move()
     }
 }
 
-void Ally::attack(std::vector<Enemy>* enemyVector)
+void Ally::attack(std::vector<Enemy>* enemyVector, std::vector<sf::Sprite>* mapSprites)
 {
     if (this->life > 0)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->attackAnimation == true)
+        float positionX1 = this->playerSprite.getGlobalBounds().left;
+        float positionY1 = this->playerSprite.getGlobalBounds().top;
+        float positionX2 = this->playerSprite.getGlobalBounds().left + this->playerSprite.getGlobalBounds().width;
+        float positionY2 = this->playerSprite.getGlobalBounds().top + this->playerSprite.getGlobalBounds().height;
+        bool goUp = true;
+        bool goDown = true;
+        bool goLeft = true;
+        bool goRight = true;
+        if (positionX1 <= -60)
+        {
+            goLeft = false;
+        }
+        if (positionY1 <= -45)
+        {
+            goUp = false;
+        }
+        if (positionX2 >= 1980)
+        {
+            goRight = false;
+        }
+        if (positionY2 >= 1080)
+        {
+            goDown = false;
+        }
+
+        for (int i = 0; i < mapSprites->size(); i++)
+        {
+            if (Collision::PixelPerfectTest(this->playerSprite, mapSprites->at(i)))
+            {
+                if (this->playerSprite.getGlobalBounds().left < mapSprites->at(i).getGlobalBounds().left)
+                {
+                    goRight = false;
+                }
+                if (this->playerSprite.getGlobalBounds().left > mapSprites->at(i).getGlobalBounds().left)
+                {
+                    goLeft = false;
+                }
+                if (this->playerSprite.getGlobalBounds().top < mapSprites->at(i).getGlobalBounds().top)
+                {
+                    goDown = false;
+                }
+                if (this->playerSprite.getGlobalBounds().top > mapSprites->at(i).getGlobalBounds().top)
+                {
+                    goUp = false;
+                }
+            }
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->attackAnimation == true && goUp)
         {
             this->playerSprite.move(sf::Vector2f(0, -3));
             this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->attackAnimation == true)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->attackAnimation == true && goLeft)
         {
             this->playerSprite.move(sf::Vector2f(-3, 0));
             this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->attackAnimation == true)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->attackAnimation == true && goDown)
         {
             this->playerSprite.move(sf::Vector2f(0, 3));
             this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->attackAnimation == true)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->attackAnimation == true && goRight)
         {
             this->playerSprite.move(sf::Vector2f(3, 0));
             this->updatePlayerTexture(&this->playerDynamicAttackTexture, &this->deltaTimeAttack, &this->deltaTimeMaxAttack, &this->pauseTimeAttack, &this->clipAttack, enemyVector);
