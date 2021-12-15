@@ -16,8 +16,7 @@ Backslider3::Backslider3()
 	this->shopSprite.setTexture(this->texture);
 
 	// HP text
-	std::string hpText = "HP: ";
-	this->hpAmountText.setString(hpText + std::to_string(this->life));
+	this->hpAmountText.setString("HP: " + std::to_string(this->life));
 	this->font.loadFromFile("assets/fonts/FredokaOne-Regular.ttf");
 	this->hpAmountText.setFont(font);
 	this->hpAmountText.setFillColor(sf::Color(254, 250, 224));

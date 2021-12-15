@@ -226,3 +226,9 @@ void Enemy::animationInterval()
     this->deltaTimeDead += clockLaps;
     this->pauseTimeDead += clockLaps;
 }
+
+void Enemy::updateHPText()
+{
+    this->hpAmountText.setString("HP: " + std::to_string(int(this->life)));
+    this->hpAmountText.setPosition(sf::Vector2f(this->enemySprite.getGlobalBounds().left + 85, this->enemySprite.getGlobalBounds().top));
+}

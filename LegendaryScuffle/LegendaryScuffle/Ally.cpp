@@ -348,3 +348,9 @@ void Ally::animationInterval()
 Ally::~Ally()
 {
 }
+
+void Ally::updateHPText()
+{
+    this->hpAmountText.setString("HP: " + std::to_string(int(this->life)));
+    this->hpAmountText.setPosition(sf::Vector2f(this->playerSprite.getGlobalBounds().left + 75, this->playerSprite.getGlobalBounds().top + 15));
+}

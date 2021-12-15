@@ -45,6 +45,8 @@ public:
 	sf::Text hpAmountText;
 	sf::Font font;
 
+	void updateHPText();
+
 	// Animation
 	bool attackAnimation = false;
 	bool deadAnimation = false;

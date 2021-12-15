@@ -128,16 +128,31 @@ void Game::drawGame(sf::RenderWindow* window)
                     {
                         this->enemyVector->at(i).move(&this->allyVector->at(0),this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(0));
+                        if (this->enemyVector->at(i).life >= 0)
+                        {
+                            this->enemyVector->at(i).updateHPText();
+                        }
+                        window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     else if (this->pickedCharacter == 1)
                     {
                         this->enemyVector->at(i).move(&this->allyVector->at(1), this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(1));
+                        if (this->enemyVector->at(i).life >= 0)
+                        {
+                            this->enemyVector->at(i).updateHPText();
+                        }
+                        window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     else if (this->pickedCharacter == 2)
                     {
                         this->enemyVector->at(i).move(&this->allyVector->at(2), this->mapSprites);
                         this->enemyVector->at(i).attack(&this->allyVector->at(2));
+                        if (this->enemyVector->at(i).life >= 0)
+                        {
+                            this->enemyVector->at(i).updateHPText();
+                        }
+                        window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     window->draw(this->enemyVector->at(i).enemySprite);
                 }
@@ -148,6 +163,10 @@ void Game::drawGame(sf::RenderWindow* window)
             this->allyVector->at(0).move(this->mapSprites);
             this->allyVector->at(0).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(0).playerSprite);
+            if (this->allyVector->at(0).life >= 0)
+            {
+                this->allyVector->at(0).updateHPText();
+            }
             window->draw(this->allyVector->at(0).hpAmountText);
         }
         else if (this->pickedCharacter == 1 && this->allyVector->at(1).isUnlocked)
@@ -155,18 +174,32 @@ void Game::drawGame(sf::RenderWindow* window)
             this->allyVector->at(1).move(this->mapSprites);
             this->allyVector->at(1).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(1).playerSprite);
+            if (this->allyVector->at(1).life >= 0)
+            {
+                this->allyVector->at(1).updateHPText();
+            }
+            window->draw(this->allyVector->at(1).hpAmountText);
         }
         else if (this->pickedCharacter == 2 && this->allyVector->at(2).isUnlocked)
         {
             this->allyVector->at(2).move(this->mapSprites);
             this->allyVector->at(2).attack(this->enemyVector,this->mapSprites);
             window->draw(this->allyVector->at(2).playerSprite);
+            if (this->allyVector->at(2).life >= 0)
+            {
+                this->allyVector->at(2).updateHPText();
+            }
+            window->draw(this->allyVector->at(2).hpAmountText);
         }
         else
         {
             this->pickedCharacter = 0;
             this->allyVector->at(0).move(this->mapSprites);
             this->allyVector->at(0).attack(this->enemyVector,this->mapSprites);
+            if (this->allyVector->at(0).life >= 0)
+            {
+                this->allyVector->at(0).updateHPText();
+            }
             window->draw(this->allyVector->at(0).playerSprite);
         }
     }
