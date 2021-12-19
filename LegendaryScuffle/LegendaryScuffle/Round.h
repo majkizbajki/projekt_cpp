@@ -15,14 +15,23 @@ public:
     int round = 1;
 
     // Textures
+    sf::Texture leftWallTexture;
+    sf::Texture topWallTexture;
     sf::Texture barrelsTexture;
     sf::Texture fountainTexture;
-    sf::Texture treeTexture;
+    sf::Texture tree1Texture;
+    sf::Texture tree2Texture;
+    sf::Texture tree3Texture;
     std::vector<sf::Texture> mapTextures;
     // Sprites
+    sf::Sprite leftWallSprite;
+    sf::Sprite topWallSprite;
     sf::Sprite barrelsSprite;
     sf::Sprite fountainSprite;
-    sf::Sprite treeSprite;
+    sf::Sprite tree1Sprite;
+    sf::Sprite tree2Sprite;
+    sf::Sprite tree3Sprite;
+    std::vector<sf::Sprite> randomSprites;
     std::vector<sf::Sprite> mapSprites;
 
 	Round();

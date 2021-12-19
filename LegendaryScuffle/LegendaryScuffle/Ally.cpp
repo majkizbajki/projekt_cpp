@@ -18,15 +18,15 @@ void Ally::move(std::vector<sf::Sprite>* mapSprites)
         bool goDown = true;
         bool goLeft = true;
         bool goRight = true;
-        if (positionX1 <= -60)
+        if (positionX1 <= -30)
         {
             goLeft = false;
         }
-        if (positionY1 <= -45)
+        if (positionY1 <= 30)
         {
             goUp = false;
         }
-        if (positionX2 >= 1980)
+        if (positionX2 >= 1940)
         {
             goRight = false;
         }
@@ -106,15 +106,15 @@ void Ally::attack(std::vector<Enemy>* enemyVector, std::vector<sf::Sprite>* mapS
         bool goDown = true;
         bool goLeft = true;
         bool goRight = true;
-        if (positionX1 <= -60)
+        if (positionX1 <= -30)
         {
             goLeft = false;
         }
-        if (positionY1 <= -45)
+        if (positionY1 <= 30)
         {
             goUp = false;
         }
-        if (positionX2 >= 1980)
+        if (positionX2 >= 1940)
         {
             goRight = false;
         }
