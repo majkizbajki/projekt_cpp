@@ -17,8 +17,14 @@ public:
     // Textures
     sf::Texture leftWallTexture;
     sf::Texture topWallTexture;
-    sf::Texture barrelsTexture;
+    sf::Texture barrels1Texture;
+    sf::Texture barrels2Texture;
+    sf::Texture barrels3Texture;
     sf::Texture fountainTexture;
+    sf::Texture monument1Texture;
+    sf::Texture monument2Texture;
+    sf::Texture monument3Texture;
+    sf::Texture monument4Texture;
     sf::Texture tree1Texture;
     sf::Texture tree2Texture;
     sf::Texture tree3Texture;
@@ -26,8 +32,14 @@ public:
     // Sprites
     sf::Sprite leftWallSprite;
     sf::Sprite topWallSprite;
-    sf::Sprite barrelsSprite;
+    sf::Sprite barrels1Sprite;
+    sf::Sprite barrels2Sprite;
+    sf::Sprite barrels3Sprite;
     sf::Sprite fountainSprite;
+    sf::Sprite monument1Sprite;
+    sf::Sprite monument2Sprite;
+    sf::Sprite monument3Sprite;
+    sf::Sprite monument4Sprite;
     sf::Sprite tree1Sprite;
     sf::Sprite tree2Sprite;
     sf::Sprite tree3Sprite;
@@ -35,7 +47,7 @@ public:
     std::vector<sf::Sprite> mapSprites;
 
 	Round();
-    void generateRound();
+    void generateRound(int round);
     ~Round();
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();

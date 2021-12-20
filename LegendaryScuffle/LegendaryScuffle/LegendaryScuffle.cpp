@@ -78,7 +78,7 @@ int main()
                     // Round reset
                     delete gameRound;
                     gameRound = new Round();
-                    gameRound->generateRound();
+                    gameRound->generateRound(1);
 
                     for (int i = 0; i < allyVector.size(); i++)
                     {
@@ -201,11 +201,19 @@ int main()
             }
             else
             {
-                //game->isRoundEnded = true;
-                game->isGameOpen = false;
-                game->isGamePaused = false;
-                menu->isMenuWindowOpen = true;
-                menu->musicTheme.setVolume(100);
+                delete game;
+                // Round reset
+                int round = gameRound->round;
+                gameRound->round += 1;
+                gameRound->generateRound(round+1);
+
+                for (int i = 0; i < allyVector.size(); i++)
+                {
+                    allyVector[i].playerSprite.setPosition(sf::Vector2f(0.1 * desktopSize.width, 0.45 * desktopSize.height));
+                }
+
+                game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector, &gameRound->enemyVector, &gameRound->mapSprites);
+                game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
             }
 
             if (game->pickedCharacter == 0)

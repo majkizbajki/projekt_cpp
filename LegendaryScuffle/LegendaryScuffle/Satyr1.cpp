@@ -4,7 +4,7 @@ Satyr1::Satyr1()
 {
 	this->type = 0;
 	this->life = 50.0;
-	this->power = 20.0;
+	this->power = 15.0;
 	this->moveSpeed = 1;
 
 	// HP text
