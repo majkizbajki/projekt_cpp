@@ -78,7 +78,7 @@ int main()
                     // Round reset
                     delete gameRound;
                     gameRound = new Round();
-                    gameRound->generateRound(1);
+                    gameRound->generateRound();
 
                     for (int i = 0; i < allyVector.size(); i++)
                     {
@@ -202,10 +202,10 @@ int main()
             else
             {
                 delete game;
+
                 // Round reset
-                int round = gameRound->round;
                 gameRound->round += 1;
-                gameRound->generateRound(round+1);
+                gameRound->generateRound();
 
                 for (int i = 0; i < allyVector.size(); i++)
                 {
@@ -213,7 +213,7 @@ int main()
                 }
 
                 game = new Game(&menu->menuFont, &shop->pickedCharacter, &allyVector, &gameRound->enemyVector, &gameRound->mapSprites);
-                game->openGame(&menu->startGameButton, &window, &menu->isMenuWindowOpen);
+                game->isGameOpen = true;
             }
 
             if (game->pickedCharacter == 0)
@@ -304,6 +304,8 @@ int main()
     delete backslider2;
     delete backslider3;
     delete game;
+    delete gameRound;
+    delete player;
 
     return 0;
 }

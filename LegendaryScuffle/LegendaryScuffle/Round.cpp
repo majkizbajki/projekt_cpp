@@ -224,7 +224,7 @@ Round::Round()
     this->randomSprites.push_back(this->tree3Sprite);
 }
 
-void Round::generateRound(int round)
+void Round::generateRound()
 {
     this->enemyVector.clear();
     this->mapSprites.clear();
@@ -339,7 +339,11 @@ void Round::generateRound(int round)
     this->leftWallSprite.setPosition(sf::Vector2f(1894, 920));
     this->mapSprites.push_back(this->leftWallSprite);
 
-    if (round < 3)
+    if (this->round <= 3)
+    {
+        this->enemyVector.push_back(*this->satyr1);
+    }
+    else if (this->round > 3 && this->round <= 6)
     {
         this->enemyVector.push_back(*this->satyr1);
         this->enemyVector.push_back(*this->satyr2);

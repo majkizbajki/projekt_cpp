@@ -47,7 +47,7 @@ public:
     std::vector<sf::Sprite> mapSprites;
 
 	Round();
-    void generateRound(int round);
+    void generateRound();
     ~Round();
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
