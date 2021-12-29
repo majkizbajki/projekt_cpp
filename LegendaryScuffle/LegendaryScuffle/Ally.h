@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.h"
 #include "Collision.h"
+#include <fstream>
 class Enemy;
 
 class Ally : public Character

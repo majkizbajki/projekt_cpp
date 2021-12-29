@@ -183,12 +183,12 @@ void Ally::dead()
 
 void Ally::setStatistics(int pickedCharacter)
 {
-    if (pickedCharacter == 0)
+    /*if (pickedCharacter == 0)
     {
         this->armor = 10.0;
         this->life = 100.0;
         this->magicResist = 10.0;
-        this->power = 10.0;
+        this->power = 30.0;
         this->superPower = 1.0;
     }
     else if (pickedCharacter == 1)
@@ -206,7 +206,7 @@ void Ally::setStatistics(int pickedCharacter)
         this->magicResist = 50.0;
         this->power = 100.0;
         this->superPower = 1.0;
-    }
+    }*/
 }
 
 void Ally::loadPickedTexture(int pickedCharacter)

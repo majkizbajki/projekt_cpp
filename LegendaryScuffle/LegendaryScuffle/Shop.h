@@ -4,6 +4,7 @@
 #include <string>
 #include "Ally.h"
 #include "Player.h"
+#include <fstream>
 
 class Shop
 {
@@ -30,6 +31,8 @@ public:
 private:
     const sf::VideoMode desktopSize = sf::VideoMode::getDesktopMode();
     sf::Window window;
+
+    std::fstream file;
 
     // Texture
     sf::Texture leftArrow;

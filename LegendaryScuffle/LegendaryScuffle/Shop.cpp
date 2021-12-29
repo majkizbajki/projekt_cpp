@@ -578,6 +578,49 @@ void Shop::closeShop(bool* isMenuWindowOpen)
 
     if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
     {
+        this->file.open("saves/player.txt", std::ios::in | std::ios::out);
+        if (this->file.good() == true)
+        {
+            this->file << "money=" << std::to_string(player->money) << "\n";
+        }
+        this->file.close();
+
+        this->file.open("saves/backslider1.txt", std::ios::in | std::ios::out);
+        if (this->file.good() == true)
+        {
+            this->file << "isUnlocked=" << std::to_string(allyVector->at(0).isUnlocked) << "\n";
+            this->file << "armorLevel=" << std::to_string(allyVector->at(0).armorLevel) << "\n";
+            this->file << "lifeLevel=" << std::to_string(allyVector->at(0).lifeLevel) << "\n";
+            this->file << "magicResistLevel=" << std::to_string(allyVector->at(0).magicResistLevel) << "\n";
+            this->file << "powerLevel=" << std::to_string(allyVector->at(0).powerLevel) << "\n";
+            this->file << "superPowerLevel=" << std::to_string(allyVector->at(0).superPowerLevel) << "\n";
+        }
+        this->file.close();
+
+        this->file.open("saves/backslider2.txt", std::ios::in | std::ios::out);
+        if (this->file.good() == true)
+        {
+            this->file << "isUnlocked=" << std::to_string(allyVector->at(1).isUnlocked) << "\n";
+            this->file << "armorLevel=" << std::to_string(allyVector->at(1).armorLevel) << "\n";
+            this->file << "lifeLevel=" << std::to_string(allyVector->at(1).lifeLevel) << "\n";
+            this->file << "magicResistLevel=" << std::to_string(allyVector->at(1).magicResistLevel) << "\n";
+            this->file << "powerLevel=" << std::to_string(allyVector->at(1).powerLevel) << "\n";
+            this->file << "superPowerLevel=" << std::to_string(allyVector->at(1).superPowerLevel) << "\n";
+        }
+        this->file.close();
+
+        this->file.open("saves/backslider3.txt", std::ios::in | std::ios::out);
+        if (this->file.good() == true)
+        {
+            this->file << "isUnlocked=" << std::to_string(allyVector->at(2).isUnlocked) << "\n";
+            this->file << "armorLevel=" << std::to_string(allyVector->at(2).armorLevel) << "\n";
+            this->file << "lifeLevel=" << std::to_string(allyVector->at(2).lifeLevel) << "\n";
+            this->file << "magicResistLevel=" << std::to_string(allyVector->at(2).magicResistLevel) << "\n";
+            this->file << "powerLevel=" << std::to_string(allyVector->at(2).powerLevel) << "\n";
+            this->file << "superPowerLevel=" << std::to_string(allyVector->at(2).superPowerLevel) << "\n";
+        }
+        this->file.close();
+
         this->isShopOpen = false;
         *isMenuWindowOpen = true;
     }
@@ -2415,4 +2458,5 @@ void Shop::upgradeCharacterText()
 
 Shop::~Shop()
 {
+    this->file.close();
 }

@@ -1,0 +1,6 @@
+isUnlocked=1
+armorLevel=3
+lifeLevel=8
+magicResistLevel=1
+powerLevel=2
+superPowerLevel=1
