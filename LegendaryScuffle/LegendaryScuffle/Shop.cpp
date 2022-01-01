@@ -554,6 +554,9 @@ void Shop::openShop(sf::RectangleShape* button, sf::RenderWindow* window, bool* 
     float mousePositionX = sf::Mouse::getPosition().x;
     float mousePositionY = sf::Mouse::getPosition().y;
 
+    std::string moneyString = std::to_string(this->player->money);
+    this->moneyText.setString(moneyString);
+
     if (mousePositionX >= buttonX && mousePositionX <= (buttonX + buttonWidth) && mousePositionY >= buttonY && mousePositionY <= (buttonY + buttonHeight))
     {
         this->isShopOpen = true;

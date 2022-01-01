@@ -12,7 +12,10 @@ public:
     Satyr2* satyr2 = new Satyr2();
     Satyr3* satyr3 = new Satyr3();
     std::vector<Enemy> enemyVector;
+
     int round = 1;
+    int maxEnemyLife = 120;
+    int maxEnemyPower = 30;
 
     // Textures
     sf::Texture leftWallTexture;

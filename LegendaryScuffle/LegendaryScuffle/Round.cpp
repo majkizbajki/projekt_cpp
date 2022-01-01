@@ -339,18 +339,97 @@ void Round::generateRound()
     this->leftWallSprite.setPosition(sf::Vector2f(1894, 920));
     this->mapSprites.push_back(this->leftWallSprite);
 
-    if (this->round <= 3)
+    int randomRound = rand() % 3 + 1;
+
+    if (this->round % 3 == 0)
     {
-        this->enemyVector.push_back(*this->satyr1);
+        if (randomRound == 1)
+        {
+            this->satyr1->life = this->maxEnemyLife;
+            this->satyr1->power = this->maxEnemyPower;
+            this->enemyVector.push_back(*this->satyr1);
+        }
+        else if (randomRound == 2)
+        {
+            this->satyr1->life = this->maxEnemyLife/2;
+            this->satyr1->power = this->maxEnemyPower/2;
+            this->satyr2->life = this->maxEnemyLife/2;
+            this->satyr2->power = this->maxEnemyPower/2;
+            this->enemyVector.push_back(*this->satyr1);
+            this->enemyVector.push_back(*this->satyr2);
+        }
+        else
+        {
+            this->satyr1->life = this->maxEnemyLife/3;
+            this->satyr1->power = this->maxEnemyPower/3;
+            this->satyr2->life = this->maxEnemyLife/3;
+            this->satyr2->power = this->maxEnemyPower/3;
+            this->satyr3->life = this->maxEnemyLife/3;
+            this->satyr3->power = this->maxEnemyPower/3;
+            this->enemyVector.push_back(*this->satyr1);
+            this->enemyVector.push_back(*this->satyr2);
+            this->enemyVector.push_back(*this->satyr3);
+        }
     }
-    else if (this->round > 3 && this->round <= 6)
+    else if (this->round % 3 == 1)
     {
-        this->enemyVector.push_back(*this->satyr1);
-        this->enemyVector.push_back(*this->satyr2);
+        if (randomRound == 1)
+        {
+            this->satyr2->life = this->maxEnemyLife;
+            this->satyr2->power = this->maxEnemyPower;
+            this->enemyVector.push_back(*this->satyr2);
+        }
+        else if (randomRound == 2)
+        {
+            this->satyr1->life = this->maxEnemyLife / 2;
+            this->satyr1->power = this->maxEnemyPower / 2;
+            this->satyr3->life = this->maxEnemyLife / 2;
+            this->satyr3->power = this->maxEnemyPower / 2;
+            this->enemyVector.push_back(*this->satyr1);
+            this->enemyVector.push_back(*this->satyr3);
+        }
+        else
+        {
+            this->satyr1->life = this->maxEnemyLife / 3;
+            this->satyr1->power = this->maxEnemyPower / 3;
+            this->satyr2->life = this->maxEnemyLife / 3;
+            this->satyr2->power = this->maxEnemyPower / 3;
+            this->satyr3->life = this->maxEnemyLife / 3;
+            this->satyr3->power = this->maxEnemyPower / 3;
+            this->enemyVector.push_back(*this->satyr1);
+            this->enemyVector.push_back(*this->satyr2);
+            this->enemyVector.push_back(*this->satyr3);
+        }
     }
     else
     {
-        this->enemyVector.push_back(*this->satyr3);
+        if (randomRound == 1)
+        {
+            this->satyr3->life = this->maxEnemyLife;
+            this->satyr3->power = this->maxEnemyPower;
+            this->enemyVector.push_back(*this->satyr3);
+        }
+        else if (randomRound == 2)
+        {
+            this->satyr2->life = this->maxEnemyLife / 2;
+            this->satyr2->power = this->maxEnemyPower / 2;
+            this->satyr3->life = this->maxEnemyLife / 2;
+            this->satyr3->power = this->maxEnemyPower / 2;
+            this->enemyVector.push_back(*this->satyr2);
+            this->enemyVector.push_back(*this->satyr3);
+        }
+        else
+        {
+            this->satyr1->life = this->maxEnemyLife / 3;
+            this->satyr1->power = this->maxEnemyPower / 3;
+            this->satyr2->life = this->maxEnemyLife / 3;
+            this->satyr2->power = this->maxEnemyPower / 3;
+            this->satyr3->life = this->maxEnemyLife / 3;
+            this->satyr3->power = this->maxEnemyPower / 3;
+            this->enemyVector.push_back(*this->satyr1);
+            this->enemyVector.push_back(*this->satyr2);
+            this->enemyVector.push_back(*this->satyr3);
+        }
     }
 
     for (int i = 0; i < 4; i++)

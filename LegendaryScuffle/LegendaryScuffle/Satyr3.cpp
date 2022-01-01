@@ -3,8 +3,8 @@
 Satyr3::Satyr3()
 {
 	this->type = 0;
-	this->life = 50.0;
-	this->power = 20.0;
+	this->life = 10.0;
+	this->power = 10.0;
 	this->moveSpeed = 2;
 
 	// HP text

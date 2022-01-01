@@ -204,7 +204,19 @@ int main()
                 delete game;
 
                 // Round reset
+                player->money += gameRound->round * 25;
+                std::fstream file;
+                file.open("saves/player.txt", std::ios::in | std::ios::out);
+                if (file.good() == true)
+                {
+                    std::string text = "money=" + std::to_string(player->money);
+                    file >> text;
+
+                    file.close();
+                }
                 gameRound->round += 1;
+                gameRound->maxEnemyLife *= 2;
+                gameRound->maxEnemyPower *= 2;
                 gameRound->generateRound();
 
                 for (int i = 0; i < allyVector.size(); i++)

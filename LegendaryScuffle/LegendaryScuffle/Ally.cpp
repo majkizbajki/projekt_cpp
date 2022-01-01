@@ -183,30 +183,582 @@ void Ally::dead()
 
 void Ally::setStatistics(int pickedCharacter)
 {
-    /*if (pickedCharacter == 0)
+    if (pickedCharacter == 0)
     {
-        this->armor = 10.0;
-        this->life = 100.0;
-        this->magicResist = 10.0;
-        this->power = 30.0;
-        this->superPower = 1.0;
+        // LIFE
+        switch (this->lifeLevel)
+        {
+        case 1:
+            this->life = 100;
+            break;
+        case 2:
+            this->life = 250;
+            break;
+        case 3:
+            this->life = 500;
+            break;
+        case 4:
+            this->life = 750;
+            break;
+        case 5:
+            this->life = 1000;
+            break;
+        case 6:
+            this->life = 1250;
+            break;
+        case 7:
+            this->life = 1500;
+            break;
+        case 8:
+            this->life = 2500;
+            break;
+        case 9:
+            this->life = 5000;
+            break;
+        case 10:
+            this->life = 7500;
+            break;
+        default:
+            this->life = 100;
+            break;
+        }
+
+        // POWER
+        switch (this->powerLevel)
+        {
+        case 1:
+            this->power = 10;
+            break;
+        case 2:
+            this->power = 20;
+            break;
+        case 3:
+            this->power = 30;
+            break;
+        case 4:
+            this->power = 40;
+            break;
+        case 5:
+            this->power = 50;
+            break;
+        case 6:
+            this->power = 60;
+            break;
+        case 7:
+            this->power = 70;
+            break;
+        case 8:
+            this->power = 80;
+            break;
+        case 9:
+            this->power = 90;
+            break;
+        case 10:
+            this->power = 100;
+            break;
+        default:
+            this->power = 10;
+            break;
+        }
+
+        // ARMOR
+        switch (this->armorLevel)
+        {
+        case 1:
+            this->armor = 15;
+            break;
+        case 2:
+            this->armor = 20;
+            break;
+        case 3:
+            this->armor = 25;
+            break;
+        case 4:
+            this->armor = 30;
+            break;
+        case 5:
+            this->armor = 35;
+            break;
+        case 6:
+            this->armor = 40;
+            break;
+        case 7:
+            this->armor = 45;
+            break;
+        case 8:
+            this->armor = 50;
+            break;
+        case 9:
+            this->armor = 75;
+            break;
+        case 10:
+            this->armor = 100;
+            break;
+        default:
+            this->armor = 15;
+            break;
+        }
+
+        // MAGIC RESIST
+        switch (this->magicResistLevel)
+        {
+        case 1:
+            this->magicResist = 15;
+            break;
+        case 2:
+            this->magicResist = 20;
+            break;
+        case 3:
+            this->magicResist = 25;
+            break;
+        case 4:
+            this->magicResist = 30;
+            break;
+        case 5:
+            this->magicResist = 35;
+            break;
+        case 6:
+            this->magicResist = 40;
+            break;
+        case 7:
+            this->magicResist = 45;
+            break;
+        case 8:
+            this->magicResist = 50;
+            break;
+        case 9:
+            this->magicResist = 75;
+            break;
+        case 10:
+            this->magicResist = 100;
+            break;
+        default:
+            this->magicResist = 15;
+            break;
+        }
+
+        // SUPER POWER
+        switch (this->superPowerLevel)
+        {
+        case 1:
+            this->superPower = 1;
+            break;
+        case 2:
+            this->superPower = 1.5;
+            break;
+        case 3:
+            this->superPower = 2;
+            break;
+        case 4:
+            this->superPower = 2.5;
+            break;
+        case 5:
+            this->superPower = 3;
+            break;
+        case 6:
+            this->superPower = 3.5;
+            break;
+        case 7:
+            this->superPower = 4;
+            break;
+        case 8:
+            this->superPower = 4.5;
+            break;
+        case 9:
+            this->superPower = 5;
+            break;
+        case 10:
+            this->superPower = 5.5;
+            break;
+        default:
+            this->superPower = 1;
+            break;
+        }
     }
     else if (pickedCharacter == 1)
     {
-        this->armor = 25.0;
-        this->life = 1000.0;
-        this->magicResist = 25.0;
-        this->power = 50.0;
-        this->superPower = 1.0;
+    // LIFE
+    switch (this->lifeLevel)
+    {
+    case 1:
+        this->life = 1000;
+        break;
+    case 2:
+        this->life = 2500;
+        break;
+    case 3:
+        this->life = 5000;
+        break;
+    case 4:
+        this->life = 7500;
+        break;
+    case 5:
+        this->life = 10000;
+        break;
+    case 6:
+        this->life = 12000;
+        break;
+    case 7:
+        this->life = 14000;
+        break;
+    case 8:
+        this->life = 16000;
+        break;
+    case 9:
+        this->life = 18000;
+        break;
+    case 10:
+        this->life = 20000;
+        break;
+    default:
+        this->life = 1000;
+        break;
+    }
+
+    // POWER
+    switch (this->powerLevel)
+    {
+    case 1:
+        this->power = 50;
+        break;
+    case 2:
+        this->power = 75;
+        break;
+    case 3:
+        this->power = 100;
+        break;
+    case 4:
+        this->power = 125;
+        break;
+    case 5:
+        this->power = 150;
+        break;
+    case 6:
+        this->power = 175;
+        break;
+    case 7:
+        this->power = 200;
+        break;
+    case 8:
+        this->power = 250;
+        break;
+    case 9:
+        this->power = 300;
+        break;
+    case 10:
+        this->power = 350;
+        break;
+    default:
+        this->power = 50;
+        break;
+    }
+
+    // ARMOR
+    switch (this->armorLevel)
+    {
+    case 1:
+        this->armor = 25;
+        break;
+    case 2:
+        this->armor = 35;
+        break;
+    case 3:
+        this->armor = 45;
+        break;
+    case 4:
+        this->armor = 55;
+        break;
+    case 5:
+        this->armor = 65;
+        break;
+    case 6:
+        this->armor = 75;
+        break;
+    case 7:
+        this->armor = 100;
+        break;
+    case 8:
+        this->armor = 125;
+        break;
+    case 9:
+        this->armor = 150;
+        break;
+    case 10:
+        this->armor = 200;
+        break;
+    default:
+        this->armor = 25;
+        break;
+    }
+
+    // MAGIC RESIST
+    switch (this->magicResistLevel)
+    {
+    case 1:
+        this->magicResist = 25;
+        break;
+    case 2:
+        this->magicResist = 35;
+        break;
+    case 3:
+        this->magicResist = 45;
+        break;
+    case 4:
+        this->magicResist = 55;
+        break;
+    case 5:
+        this->magicResist = 65;
+        break;
+    case 6:
+        this->magicResist = 75;
+        break;
+    case 7:
+        this->magicResist = 100;
+        break;
+    case 8:
+        this->magicResist = 125;
+        break;
+    case 9:
+        this->magicResist = 150;
+        break;
+    case 10:
+        this->magicResist = 200;
+        break;
+    default:
+        this->magicResist = 50;
+        break;
+    }
+
+    // SUPER POWER
+    switch (this->superPowerLevel)
+    {
+    case 1:
+        this->superPower = 1;
+        break;
+    case 2:
+        this->superPower = 1.5;
+        break;
+    case 3:
+        this->superPower = 2;
+        break;
+    case 4:
+        this->superPower = 2.5;
+        break;
+    case 5:
+        this->superPower = 3;
+        break;
+    case 6:
+        this->superPower = 3.5;
+        break;
+    case 7:
+        this->superPower = 4;
+        break;
+    case 8:
+        this->superPower = 4.5;
+        break;
+    case 9:
+        this->superPower = 5;
+        break;
+    case 10:
+        this->superPower = 5.5;
+        break;
+    default:
+        this->superPower = 1;
+        break;
+    }
     }
     else if (pickedCharacter == 2)
     {
-        this->armor = 50.0;
-        this->life = 5000.0;
-        this->magicResist = 50.0;
-        this->power = 100.0;
-        this->superPower = 1.0;
-    }*/
+    // LIFE
+    switch (this->lifeLevel)
+    {
+    case 1:
+        this->life = 5000;
+        break;
+    case 2:
+        this->life = 10000;
+        break;
+    case 3:
+        this->life = 15000;
+        break;
+    case 4:
+        this->life = 20000;
+        break;
+    case 5:
+        this->life = 25000;
+        break;
+    case 6:
+        this->life = 27500;
+        break;
+    case 7:
+        this->life = 30000;
+        break;
+    case 8:
+        this->life = 32500;
+        break;
+    case 9:
+        this->life = 35000;
+        break;
+    case 10:
+        this->life = 37500;
+        break;
+    default:
+        this->life = 5000;
+        break;
+    }
+
+    // POWER
+    switch (this->powerLevel)
+    {
+    case 1:
+        this->power = 100;
+        break;
+    case 2:
+        this->power = 200;
+        break;
+    case 3:
+        this->power = 300;
+        break;
+    case 4:
+        this->power = 400;
+        break;
+    case 5:
+        this->power = 500;
+        break;
+    case 6:
+        this->power = 600;
+        break;
+    case 7:
+        this->power = 700;
+        break;
+    case 8:
+        this->power = 800;
+        break;
+    case 9:
+        this->power = 900;
+        break;
+    case 10:
+        this->power = 1000;
+        break;
+    default:
+        this->power = 100;
+        break;
+    }
+
+    // ARMOR
+    switch (this->armorLevel)
+    {
+    case 1:
+        this->armor = 50;
+        break;
+    case 2:
+        this->armor = 100;
+        break;
+    case 3:
+        this->armor = 150;
+        break;
+    case 4:
+        this->armor = 200;
+        break;
+    case 5:
+        this->armor = 250;
+        break;
+    case 6:
+        this->armor = 300;
+        break;
+    case 7:
+        this->armor = 350;
+        break;
+    case 8:
+        this->armor = 400;
+        break;
+    case 9:
+        this->armor = 450;
+        break;
+    case 10:
+        this->armor = 500;
+        break;
+    default:
+        this->armor = 50;
+        break;
+    }
+
+    // MAGIC RESIST
+    switch (this->magicResistLevel)
+    {
+    case 1:
+        this->magicResist = 50;
+        break;
+    case 2:
+        this->magicResist = 100;
+        break;
+    case 3:
+        this->magicResist = 150;
+        break;
+    case 4:
+        this->magicResist = 200;
+        break;
+    case 5:
+        this->magicResist = 250;
+        break;
+    case 6:
+        this->magicResist = 300;
+        break;
+    case 7:
+        this->magicResist = 350;
+        break;
+    case 8:
+        this->magicResist = 400;
+        break;
+    case 9:
+        this->magicResist = 450;
+        break;
+    case 10:
+        this->magicResist = 500;
+        break;
+    default:
+        this->magicResist = 50;
+        break;
+    }
+
+    // SUPER POWER
+    switch (this->superPowerLevel)
+    {
+    case 1:
+        this->superPower = 1;
+        break;
+    case 2:
+        this->superPower = 1.5;
+        break;
+    case 3:
+        this->superPower = 2;
+        break;
+    case 4:
+        this->superPower = 2.5;
+        break;
+    case 5:
+        this->superPower = 3;
+        break;
+    case 6:
+        this->superPower = 3.5;
+        break;
+    case 7:
+        this->superPower = 4;
+        break;
+    case 8:
+        this->superPower = 4.5;
+        break;
+    case 9:
+        this->superPower = 5;
+        break;
+    case 10:
+        this->superPower = 5.5;
+        break;
+    default:
+        this->superPower = 1;
+        break;
+    }
+    }
 }
 
 void Ally::loadPickedTexture(int pickedCharacter)
