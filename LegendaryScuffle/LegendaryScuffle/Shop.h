@@ -67,6 +67,7 @@ private:
     sf::Sprite magicResistUpgradeSprite;
     sf::Sprite superPowerUpgradeSprite;
     sf::Sprite moneyTextSprite;
+    std::vector<sf::Sprite> moneyUpgradeSprite;
 
     // Text
     sf::Text shopText;
@@ -79,10 +80,15 @@ private:
     sf::Text magicResistText;
     sf::Text armorText;
     sf::Text lifeUpgradeText;
+    sf::Text lifeUpgradeCostText;
     sf::Text powerUpgradeText;
+    sf::Text powerUpgradeCostText;
     sf::Text superPowerUpgradeText;
+    sf::Text superPowerUpgradeCostText;
     sf::Text magicResistUpgradeText;
+    sf::Text magicResistUpgradeCostText;
     sf::Text armorUpgradeText;
+    sf::Text armorUpgradeCostText;
     sf::Text moneyText;
 
     sf::Font menuFont;

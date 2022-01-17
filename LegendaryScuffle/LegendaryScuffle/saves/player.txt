@@ -1,1 +1,1 @@
-money=365
+money=880

@@ -43,11 +43,11 @@ Rules::Rules(sf::Font* menuFont)
     this->spaceText.setFillColor(sf::Color(254, 250, 224));
     this->spaceText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.4 * desktopSize.height));
 
-    this->superPowerText.setString("R - using super power");
-    this->superPowerText.setFont(*menuFont);
-    this->superPowerText.setCharacterSize(30);
-    this->superPowerText.setFillColor(sf::Color(254, 250, 224));
-    this->superPowerText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.5 * desktopSize.height));
+    //this->superPowerText.setString("R - using super power");
+    //this->superPowerText.setFont(*menuFont);
+    //this->superPowerText.setCharacterSize(30);
+    //this->superPowerText.setFillColor(sf::Color(254, 250, 224));
+    //this->superPowerText.setPosition(sf::Vector2f(0.6 * desktopSize.width, 0.5 * desktopSize.height));
 
     // Rules / controls sf::text vector
 

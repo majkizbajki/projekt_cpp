@@ -207,15 +207,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->lifeUpgradeText.setFont(this->menuFont);
-        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setCharacterSize(25);
         this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // POWER LEVEL
@@ -224,15 +224,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->powerUpgradeText.setFont(this->menuFont);
-        this->powerUpgradeText.setCharacterSize(40);
+        this->powerUpgradeText.setCharacterSize(25);
         this->powerUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // ARMOR LEVEL
@@ -249,15 +249,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->armorUpgradeText.setFont(this->menuFont);
-        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setCharacterSize(25);
         this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // MAGIC RESIST LEVEL
@@ -274,15 +274,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->magicResistUpgradeText.setFont(this->menuFont);
-        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setCharacterSize(25);
         this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // SUPER POWER LEVEL
@@ -291,15 +291,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.9 * this->desktopSize.height));
         }
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.925 * this->desktopSize.height));
         }
         this->superPowerUpgradeText.setFont(this->menuFont);
-        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setCharacterSize(25);
         this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
     }
     else if (this->pickedCharacter == 1)
@@ -322,15 +322,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->lifeUpgradeText.setFont(this->menuFont);
-        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setCharacterSize(25);
         this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // POWER LEVEL
@@ -347,15 +347,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->powerUpgradeText.setFont(this->menuFont);
-        this->powerUpgradeText.setCharacterSize(40);
+        this->powerUpgradeText.setCharacterSize(25);
         this->powerUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // ARMOR LEVEL
@@ -376,15 +376,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->armorUpgradeText.setFont(this->menuFont);
-        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setCharacterSize(25);
         this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // MAGIC RESIST LEVEL
@@ -405,15 +405,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->magicResistUpgradeText.setFont(this->menuFont);
-        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setCharacterSize(25);
         this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // SUPER POWER LEVEL
@@ -422,15 +422,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.9 * this->desktopSize.height));
         }
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.925 * this->desktopSize.height));
         }
         this->superPowerUpgradeText.setFont(this->menuFont);
-        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setCharacterSize(25);
         this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
     }
     else if (this->pickedCharacter == 2)
@@ -449,15 +449,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).lifeLevel != 10)
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  " + lifeLevel + "\n" + "NEXT  LEVEL:  " + lifeNextLevel);
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->lifeUpgradeText.setString("LIFE  LEVEL:  MAX");
-            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->lifeUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->lifeUpgradeText.setFont(this->menuFont);
-        this->lifeUpgradeText.setCharacterSize(40);
+        this->lifeUpgradeText.setCharacterSize(25);
         this->lifeUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // POWER LEVEL
@@ -466,12 +466,12 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.68 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.7 * this->desktopSize.height));
         }
         else
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  MAX");
-            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.705 * this->desktopSize.height));
+            this->powerUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.725 * this->desktopSize.height));
         }
         this->powerUpgradeText.setFont(this->menuFont);
         this->powerUpgradeText.setCharacterSize(40);
@@ -483,15 +483,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  MAX");
-            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->armorUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->armorUpgradeText.setFont(this->menuFont);
-        this->armorUpgradeText.setCharacterSize(40);
+        this->armorUpgradeText.setCharacterSize(25);
         this->armorUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // MAGIC RESIST LEVEL
@@ -500,15 +500,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.78 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.8 * this->desktopSize.height));
         }
         else
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  MAX");
-            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.805 * this->desktopSize.height));
+            this->magicResistUpgradeText.setPosition(sf::Vector2f(0.55 * this->desktopSize.width, 0.825 * this->desktopSize.height));
         }
         this->magicResistUpgradeText.setFont(this->menuFont);
-        this->magicResistUpgradeText.setCharacterSize(40);
+        this->magicResistUpgradeText.setCharacterSize(25);
         this->magicResistUpgradeText.setFillColor(sf::Color(254, 250, 224));
 
         // SUPER POWER LEVEL
@@ -517,15 +517,15 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.88 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.9 * this->desktopSize.height));
         }
         else
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  MAX");
-            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.905 * this->desktopSize.height));
+            this->superPowerUpgradeText.setPosition(sf::Vector2f(0.15 * this->desktopSize.width, 0.925 * this->desktopSize.height));
         }
         this->superPowerUpgradeText.setFont(this->menuFont);
-        this->superPowerUpgradeText.setCharacterSize(40);
+        this->superPowerUpgradeText.setCharacterSize(25);
         this->superPowerUpgradeText.setFillColor(sf::Color(254, 250, 224));
     }
 
@@ -537,7 +537,21 @@ Shop::Shop(sf::Font* menuFont, std::vector<Ally>* allyVector,Player* player)
     this->moneyText.setFillColor(sf::Color(254, 250, 224));
     this->moneyText.setPosition(sf::Vector2f(0.5 * this->desktopSize.width, 0.03 * this->desktopSize.height));
 
-    // Money sprite
+    // Money sprite    
+    moneyTextTexture.loadFromFile("assets/shop/coins.png");
+    moneyTextTexture.setSmooth(true);
+    moneyTextSprite.setTexture(this->moneyTextTexture);
+    moneyTextSprite.setPosition(sf::Vector2f(0.35 * this->desktopSize.width, 0.04 * this->desktopSize.height));
+    for (int i = 0; i < 5; i++)
+    {
+        this->moneyUpgradeSprite.push_back(moneyTextSprite);
+    }
+    this->moneyUpgradeSprite[0].setPosition(sf::Vector2f(0.34 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+    this->moneyUpgradeSprite[1].setPosition(sf::Vector2f(0.34 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+    this->moneyUpgradeSprite[2].setPosition(sf::Vector2f(0.34 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+    this->moneyUpgradeSprite[3].setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+    this->moneyUpgradeSprite[4].setPosition(sf::Vector2f(0.88 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+
     this->moneyTextTexture.loadFromFile("assets/shop/coins.png");
     this->moneyTextTexture.setSmooth(true);
     this->moneyTextSprite.setTexture(this->moneyTextTexture);
@@ -677,11 +691,21 @@ void Shop::drawShop(sf::RenderWindow* window)
         window->draw(this->superPowerUpgradeSprite);
         window->draw(this->superPowerUpgradeText);
 
+        window->draw(this->lifeUpgradeCostText);
+        window->draw(this->armorUpgradeCostText);
+        window->draw(this->magicResistUpgradeCostText);
+        window->draw(this->powerUpgradeCostText);
+        window->draw(this->superPowerUpgradeCostText);
+
         for (int i = 0; i < this->possibleUpgrade.size(); i++) {
             if (possibleUpgrade[i] == true)
             {
                 window->draw(this->upgradeButtonVector.at(i));
             }
+        }
+        for (int i = 0; i < this->moneyUpgradeSprite.size(); i++)
+        {
+            window->draw(this->moneyUpgradeSprite[i]);
         }
     }
     else
@@ -732,6 +756,12 @@ void Shop::drawShop(sf::RenderWindow* window)
                 window->draw(this->superPowerUpgradeSprite);
                 window->draw(this->superPowerUpgradeText);
 
+                window->draw(this->lifeUpgradeCostText);
+                window->draw(this->armorUpgradeCostText);
+                window->draw(this->magicResistUpgradeCostText);
+                window->draw(this->powerUpgradeCostText);
+                window->draw(this->superPowerUpgradeCostText);
+
                 for (int i = 0; i < this->possibleUpgrade.size(); i++) {
                     if (possibleUpgrade[i] == true)
                     {
@@ -780,6 +810,11 @@ void Shop::pickCharacter()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "150 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 150));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 150 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -792,6 +827,11 @@ void Shop::pickCharacter()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
         {
             lifeNextLevel += "250 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 250));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 250 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -804,6 +844,11 @@ void Shop::pickCharacter()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
         {
             lifeNextLevel += "1000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 1000));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 1000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -816,6 +861,11 @@ void Shop::pickCharacter()
         else
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(this->allyVector->at(this->pickedCharacter).life + 2500));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -838,6 +888,11 @@ void Shop::pickCharacter()
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 10 )";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel,2) <= this->player->money)
         {
             this->possibleUpgrade[3] = true;
@@ -859,6 +914,11 @@ void Shop::pickCharacter()
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor* pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[1] = true;
@@ -888,6 +948,11 @@ void Shop::pickCharacter()
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist* pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[4] = true;
@@ -917,6 +982,11 @@ void Shop::pickCharacter()
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        this->superPowerUpgradeCostText.setString(std::to_string((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if ((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500 <= this->player->money)
         {
             this->possibleUpgrade[2] = true;
@@ -957,6 +1027,11 @@ void Shop::pickCharacter()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "1500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life + 1500)));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 1500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -969,6 +1044,11 @@ void Shop::pickCharacter()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life + 2500)));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -981,6 +1061,11 @@ void Shop::pickCharacter()
         else
         {
             lifeNextLevel += "2000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life + 2000)));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -1003,6 +1088,11 @@ void Shop::pickCharacter()
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + ";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power* pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[3] = true;
@@ -1032,6 +1122,11 @@ void Shop::pickCharacter()
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[1] = true;
@@ -1065,6 +1160,11 @@ void Shop::pickCharacter()
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist* pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[4] = true;
@@ -1098,6 +1198,11 @@ void Shop::pickCharacter()
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        this->superPowerUpgradeCostText.setString(std::to_string(int((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 1000)));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel * 1000 <= this->player->money)
         {
             this->possibleUpgrade[2] = true;
@@ -1138,6 +1243,11 @@ void Shop::pickCharacter()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "5000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life + 5000)));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 5000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -1150,6 +1260,11 @@ void Shop::pickCharacter()
         else
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life + 2500)));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -1172,6 +1287,11 @@ void Shop::pickCharacter()
         // POWER LEVEL
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 100 )";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power* pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[3] = true;
@@ -1193,6 +1313,11 @@ void Shop::pickCharacter()
         // ARMOR LEVEL
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + 50 )";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor* pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armor * pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[1] = true;
@@ -1214,6 +1339,11 @@ void Shop::pickCharacter()
         // MAGIC RESIST LEVEL
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + 50 )";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResist * pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2) <= this->player->money)
         {
             this->possibleUpgrade[4] = true;
@@ -1234,6 +1364,11 @@ void Shop::pickCharacter()
         }
         // SUPER POWER LEVEL
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
+        this->superPowerUpgradeCostText.setString(std::to_string(int((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 2000)));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel * 2000 <= this->player->money)
         {
             this->possibleUpgrade[2] = true;
@@ -1299,6 +1434,7 @@ void Shop::unlockCharacter()
         this->allyVector->at(this->pickedCharacter).isUnlocked = true;
         std::string moneyString = std::to_string(this->player->money);
         this->moneyText.setString(moneyString);
+        this->upgradeCharacterText();
     }
 }
 
@@ -2001,6 +2137,11 @@ void Shop::upgradeCharacterText()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "150 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 150));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 150 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2013,6 +2154,11 @@ void Shop::upgradeCharacterText()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 7)
         {
             lifeNextLevel += "250 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 250));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 250 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2025,6 +2171,11 @@ void Shop::upgradeCharacterText()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel == 7)
         {
             lifeNextLevel += "1000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 1000));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 1000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2037,6 +2188,11 @@ void Shop::upgradeCharacterText()
         else
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 2500));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2066,6 +2222,11 @@ void Shop::upgradeCharacterText()
         }
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 10 )";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power * pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
@@ -2087,6 +2248,11 @@ void Shop::upgradeCharacterText()
         }
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor* pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armorLevel < 8)
         {
             armorNextLevel += "5 )";
@@ -2116,6 +2282,11 @@ void Shop::upgradeCharacterText()
         }
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist* pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 8)
         {
             magicResistNextLevel += "5 )";
@@ -2145,6 +2316,11 @@ void Shop::upgradeCharacterText()
         }
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        this->superPowerUpgradeCostText.setString(std::to_string(int((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 500)));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
@@ -2166,6 +2342,11 @@ void Shop::upgradeCharacterText()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel == 1)
         {
             lifeNextLevel += "1500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 1500));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 1500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2178,6 +2359,11 @@ void Shop::upgradeCharacterText()
         else if (this->allyVector->at(this->pickedCharacter).lifeLevel > 1 && this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 2500));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2190,6 +2376,11 @@ void Shop::upgradeCharacterText()
         else
         {
             lifeNextLevel += "2000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 2000));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2220,6 +2411,11 @@ void Shop::upgradeCharacterText()
         }
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + ";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power* pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).powerLevel < 7)
         {
             powerNextLevel += "25 )";
@@ -2249,6 +2445,11 @@ void Shop::upgradeCharacterText()
         }
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + ";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor* pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armorLevel < 6)
         {
             armorNextLevel += "10 )";
@@ -2282,6 +2483,11 @@ void Shop::upgradeCharacterText()
         }
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + ";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist* pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel < 6)
         {
             magicResistNextLevel += "10 )";
@@ -2315,6 +2521,11 @@ void Shop::upgradeCharacterText()
         }
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        this->superPowerUpgradeCostText.setString(std::to_string(int((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 1000)));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
@@ -2336,6 +2547,11 @@ void Shop::upgradeCharacterText()
         if (this->allyVector->at(this->pickedCharacter).lifeLevel < 5)
         {
             lifeNextLevel += "5000 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 5000));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 5000 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2348,6 +2564,11 @@ void Shop::upgradeCharacterText()
         else
         {
             lifeNextLevel += "2500 )";
+            this->lifeUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).life) + 2500));
+            this->lifeUpgradeCostText.setCharacterSize(25);
+            this->lifeUpgradeCostText.setFont(this->menuFont);
+            this->lifeUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+            this->lifeUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
             if (this->allyVector->at(this->pickedCharacter).life + 2500 <= this->player->money)
             {
                 this->possibleUpgrade[0] = true;
@@ -2378,6 +2599,11 @@ void Shop::upgradeCharacterText()
         }
         std::string powerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).powerLevel);
         std::string powerNextLevel = "( + 100 )";
+        this->powerUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).power* pow(this->allyVector->at(this->pickedCharacter).powerLevel, 2))));
+        this->powerUpgradeCostText.setCharacterSize(25);
+        this->powerUpgradeCostText.setFont(this->menuFont);
+        this->powerUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.7 * this->desktopSize.height));
+        this->powerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).powerLevel != 10)
         {
             this->powerUpgradeText.setString("POWER  LEVEL:  " + powerLevel + "\n" + "NEXT  LEVEL:  " + powerNextLevel);
@@ -2399,6 +2625,11 @@ void Shop::upgradeCharacterText()
         }
         std::string armorLevel = std::to_string(this->allyVector->at(this->pickedCharacter).armorLevel);
         std::string armorNextLevel = "( + 50 )";
+        this->armorUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).armor* pow(this->allyVector->at(this->pickedCharacter).armorLevel, 2))));
+        this->armorUpgradeCostText.setCharacterSize(25);
+        this->armorUpgradeCostText.setFont(this->menuFont);
+        this->armorUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->armorUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).armorLevel != 10)
         {
             this->armorUpgradeText.setString("ARMOR  LEVEL:  " + armorLevel + "\n" + "NEXT  LEVEL:  " + armorNextLevel);
@@ -2420,6 +2651,11 @@ void Shop::upgradeCharacterText()
         }
         std::string magicResistLevel = std::to_string(this->allyVector->at(this->pickedCharacter).magicResistLevel);
         std::string magicResistNextLevel = "( + 50 )";
+        this->magicResistUpgradeCostText.setString(std::to_string(int(this->allyVector->at(this->pickedCharacter).magicResist* pow(this->allyVector->at(this->pickedCharacter).magicResistLevel, 2))));
+        this->magicResistUpgradeCostText.setCharacterSize(25);
+        this->magicResistUpgradeCostText.setFont(this->menuFont);
+        this->magicResistUpgradeCostText.setPosition(sf::Vector2f(0.9 * this->desktopSize.width, 0.8 * this->desktopSize.height));
+        this->magicResistUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).magicResistLevel != 10)
         {
             this->magicResistUpgradeText.setString("MAGIC  RESIST  LEVEL:  " + magicResistLevel + "\n" + "NEXT  LEVEL:  " + magicResistNextLevel);
@@ -2441,6 +2677,11 @@ void Shop::upgradeCharacterText()
         }
         std::string superPowerLevel = std::to_string(this->allyVector->at(this->pickedCharacter).superPowerLevel);
         std::string superPowerNextLevel = "( + 0.5 )";
+        this->superPowerUpgradeCostText.setString(std::to_string(int((this->allyVector->at(this->pickedCharacter).superPowerLevel) * 2000)));
+        this->superPowerUpgradeCostText.setCharacterSize(25);
+        this->superPowerUpgradeCostText.setFont(this->menuFont);
+        this->superPowerUpgradeCostText.setPosition(sf::Vector2f(0.36 * this->desktopSize.width, 0.9 * this->desktopSize.height));
+        this->superPowerUpgradeCostText.setFillColor(sf::Color(254, 250, 224));
         if (this->allyVector->at(this->pickedCharacter).superPowerLevel != 10)
         {
             this->superPowerUpgradeText.setString("SUPER  POWER  LEVEL:  " + superPowerLevel + "\n" + "NEXT  LEVEL:  " + superPowerNextLevel);
