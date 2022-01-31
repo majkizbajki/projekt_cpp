@@ -432,37 +432,53 @@ void Round::generateRound()
         }
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 6; i++)
     {
         if (i == 0)
         {
             int random = rand() % this->randomSprites.size();
-            int x = rand() % 200 + 300;
-            int y = rand() % 600 + 200;
+            int x = rand() % 200 + 0.1 * this->desktopSize.width;
+            int y = rand() % 350 + 0.1 * this->desktopSize.height;
             this->randomSprites[random].setPosition(sf::Vector2f(x, y));
             this->mapSprites.push_back(this->randomSprites[random]);
         }
         if (i == 1)
         {
             int random = rand() % this->randomSprites.size();
-            int x = rand() % 200 + 600;
-            int y = rand() % 600 + 200;
+            int x = rand() % 200 + 0.2 * this->desktopSize.width;
+            int y = rand() % 350 + 0.5 * this->desktopSize.height;
             this->randomSprites[random].setPosition(sf::Vector2f(x, y));
             this->mapSprites.push_back(this->randomSprites[random]);
         }
         if (i == 2)
         {
             int random = rand() % this->randomSprites.size();
-            int x = rand() % 200 + 900;
-            int y = rand() % 600 + 200;
+            int x = rand() % 200 + 0.3 * this->desktopSize.width;
+            int y = rand() % 350 + 0.1 * this->desktopSize.height;
             this->randomSprites[random].setPosition(sf::Vector2f(x, y));
             this->mapSprites.push_back(this->randomSprites[random]);
         }
         if (i == 3)
         {
             int random = rand() % this->randomSprites.size();
-            int x = rand() % 200 + 1200;
-            int y = rand() % 600 + 200;
+            int x = rand() % 200 + 0.4 * this->desktopSize.width;
+            int y = rand() % 350 + 0.5 * this->desktopSize.height;
+            this->randomSprites[random].setPosition(sf::Vector2f(x, y));
+            this->mapSprites.push_back(this->randomSprites[random]);
+        }
+        if (i == 4)
+        {
+            int random = rand() % this->randomSprites.size();
+            int x = rand() % 200 + 0.5 * this->desktopSize.width;
+            int y = rand() % 350 + 0.1 * this->desktopSize.height;
+            this->randomSprites[random].setPosition(sf::Vector2f(x, y));
+            this->mapSprites.push_back(this->randomSprites[random]);
+        }
+        if (i == 5)
+        {
+            int random = rand() % this->randomSprites.size();
+            int x = rand() % 200 + 0.6 * this->desktopSize.width;
+            int y = rand() % 350 + 0.5 * this->desktopSize.height;
             this->randomSprites[random].setPosition(sf::Vector2f(x, y));
             this->mapSprites.push_back(this->randomSprites[random]);
         }

@@ -114,10 +114,6 @@ void Game::drawGame(sf::RenderWindow* window)
     }
     else
     {
-        for (int i = 0; i < mapSprites->size(); i++)
-        {
-            window->draw(mapSprites->at(i));
-        }
         if (this->enemyVector->size() > 0)
         {
             for (int i = 0; i < this->enemyVector->size(); i++)
@@ -132,7 +128,7 @@ void Game::drawGame(sf::RenderWindow* window)
                         {
                             this->enemyVector->at(i).updateHPText();
                         }
-                        window->draw(this->enemyVector->at(i).hpAmountText);
+                        //window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     else if (this->pickedCharacter == 1)
                     {
@@ -142,7 +138,7 @@ void Game::drawGame(sf::RenderWindow* window)
                         {
                             this->enemyVector->at(i).updateHPText();
                         }
-                        window->draw(this->enemyVector->at(i).hpAmountText);
+                        //window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     else if (this->pickedCharacter == 2)
                     {
@@ -152,12 +148,18 @@ void Game::drawGame(sf::RenderWindow* window)
                         {
                             this->enemyVector->at(i).updateHPText();
                         }
-                        window->draw(this->enemyVector->at(i).hpAmountText);
+                        //window->draw(this->enemyVector->at(i).hpAmountText);
                     }
                     window->draw(this->enemyVector->at(i).enemySprite);
                 }
             }
         }
+
+        for (int i = 0; i < mapSprites->size(); i++)
+        {
+            window->draw(mapSprites->at(i));
+        }
+        
         if (this->pickedCharacter == 0)
         {
             this->allyVector->at(0).move(this->mapSprites);
@@ -166,6 +168,10 @@ void Game::drawGame(sf::RenderWindow* window)
             if (this->allyVector->at(0).life >= 0)
             {
                 this->allyVector->at(0).updateHPText();
+            }
+            else
+            {
+                this->allyVector->at(0).hpAmountText.setString("HP:  0");
             }
             window->draw(this->allyVector->at(0).hpAmountText);
         }
@@ -178,6 +184,10 @@ void Game::drawGame(sf::RenderWindow* window)
             {
                 this->allyVector->at(1).updateHPText();
             }
+            else
+            {
+                this->allyVector->at(1).hpAmountText.setString("HP:  0");
+            }
             window->draw(this->allyVector->at(1).hpAmountText);
         }
         else if (this->pickedCharacter == 2 && this->allyVector->at(2).isUnlocked)
@@ -189,6 +199,10 @@ void Game::drawGame(sf::RenderWindow* window)
             {
                 this->allyVector->at(2).updateHPText();
             }
+            else
+            {
+                this->allyVector->at(2).hpAmountText.setString("HP:  0");
+            }
             window->draw(this->allyVector->at(2).hpAmountText);
         }
         else
@@ -199,6 +213,10 @@ void Game::drawGame(sf::RenderWindow* window)
             if (this->allyVector->at(0).life >= 0)
             {
                 this->allyVector->at(0).updateHPText();
+            }
+            else
+            {
+                this->allyVector->at(0).hpAmountText.setString("HP:  0");
             }
             window->draw(this->allyVector->at(0).playerSprite);
         }

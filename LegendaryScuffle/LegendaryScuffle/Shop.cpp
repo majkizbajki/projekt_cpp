@@ -598,7 +598,7 @@ void Shop::closeShop(bool* isMenuWindowOpen)
         this->file.open("saves/player.txt", std::ios::in | std::ios::out);
         if (this->file.good() == true)
         {
-            this->file << "money=" << std::to_string(player->money) << "\n";
+            this->file << "money=" << std::to_string(player->money);
         }
         this->file.close();
 

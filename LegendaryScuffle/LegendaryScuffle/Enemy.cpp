@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include <cstdlib>
 
 void Enemy::move(Ally* player, std::vector<sf::Sprite>* mapSprites)
 {
@@ -9,14 +10,17 @@ void Enemy::move(Ally* player, std::vector<sf::Sprite>* mapSprites)
             float playerX = player->playerSprite.getGlobalBounds().left + player->playerSprite.getGlobalBounds().width / 2 + 35;
             float playerY = player->playerSprite.getGlobalBounds().top + player->playerSprite.getGlobalBounds().height / 2 + 15;
             float enemyX = this->enemySprite.getGlobalBounds().left + this->enemySprite.getGlobalBounds().width / 2;
-            float enemyY = this->enemySprite.getGlobalBounds().top + this->enemySprite.getGlobalBounds().height / 2;
+            float enemyY = this->enemySprite.getGlobalBounds().top + this->enemySprite.getGlobalBounds().height / 2 - 5;
             bool collision = false;
+
+            sf::Sprite touchedSprite;
 
             for (int i = 0; i < mapSprites->size(); i++)
             {
                 if (Collision::PixelPerfectTest(this->enemySprite, mapSprites->at(i)))
                 {
                     collision = true;
+                    touchedSprite = mapSprites->at(i);
                     break;
                 }
             }
@@ -25,7 +29,7 @@ void Enemy::move(Ally* player, std::vector<sf::Sprite>* mapSprites)
                 if (playerX <= enemyX && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
                 {
                     this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
-                    if (this->enemySprite.getScale().x > 0)
+                    if (this->enemySprite.getScale().x > 0 && (enemyX - playerX) >= 5)
                     {
                         this->enemySprite.setScale(-0.45, 0.45);
                         this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x + this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
@@ -34,7 +38,7 @@ void Enemy::move(Ally* player, std::vector<sf::Sprite>* mapSprites)
                 if (playerX > enemyX && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
                 {
                     this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
-                    if (this->enemySprite.getScale().x < 0)
+                    if (this->enemySprite.getScale().x < 0 && (playerX - enemyX) >= 5)
                     {
                         this->enemySprite.setScale(0.45, 0.45);
                         this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x - this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
@@ -51,58 +55,261 @@ void Enemy::move(Ally* player, std::vector<sf::Sprite>* mapSprites)
             }
             else
             {
-                if (enemyX <= 1800)
+                float spriteX = touchedSprite.getGlobalBounds().left;
+                float spriteY = touchedSprite.getGlobalBounds().top;
+                float spriteW = touchedSprite.getGlobalBounds().left + touchedSprite.getGlobalBounds().width;
+                float spriteH = touchedSprite.getGlobalBounds().top + touchedSprite.getGlobalBounds().height;
+                
+                if (spriteY <= 0.15 * this->desktopSize.height)
                 {
-                    if (this->desktopSize.width / 2 <= enemyX)
+                    if (enemyX <= spriteX)
                     {
-                        if (playerY <= enemyY)
+                        if (playerX <= enemyX)
                         {
-                            this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
                         }
-                        if (playerY > enemyY)
+                        else
                         {
-                            this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            if (enemyY <= spriteY)   // 1
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                            }
+                            else if (enemyY > spriteY && enemyY <= spriteH) // 4
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                            else if (enemyY > spriteH)   // 7
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
                         }
                     }
-                    else if (this->desktopSize.width / 2 > enemyX)
+                    else if (enemyX <= spriteW && enemyX > spriteX)
                     {
-                        if (playerY <= enemyY)
+                        if (playerX <= enemyX)
                         {
-                            this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
                         }
-                        if (playerY > enemyY)
+                        else
                         {
-                            this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                        }
+                    }
+                    else if (enemyX > spriteW)
+                    {
+                        if (playerX <= enemyX)
+                        {
+                            if (enemyY <= spriteY)   // 3
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                            }
+                            else if (enemyY > spriteY && enemyY <= spriteH) // 6
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                            else if (enemyY > spriteH)  // 9
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                        }
+                        else
+                        {
+                            this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                        }
+                    }
+                }
+                else if (spriteH >= 0.85 * this->desktopSize.height)
+                {
+                    if (enemyX <= spriteX)
+                    {
+                        if (playerX <= enemyX)
+                        {
+                            this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                        }
+                        else
+                        {
+                            if (enemyY <= spriteY)   // 1
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                            }
+                            else if (enemyY > spriteY && enemyY <= spriteH) // 4
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                            else if (enemyY > spriteH)   // 7
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                        }
+                    }
+                    else if (enemyX <= spriteW && enemyX > spriteX)
+                    {
+                        if (playerX <= enemyX)
+                        {
+                            this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                        }
+                        else
+                        {
+                            this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                        }
+                    }
+                    else if (enemyX > spriteW)
+                    {
+                        if (playerX <= enemyX)
+                        {
+                            if (enemyY <= spriteY)   // 3
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                            }
+                            else if (enemyY > spriteY && enemyY <= spriteH) // 6
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                            else if (enemyY > spriteH)  // 9
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                        }
+                        else
+                        {
+                            this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
                         }
                     }
                 }
                 else
                 {
-                    if (playerX <= enemyX && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
+                    if (enemyX <= spriteX)
                     {
-                        this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
-                        if (this->enemySprite.getScale().x > 0)
+                        if (enemyY <= spriteY)  // 1
                         {
-                            this->enemySprite.setScale(-0.45, 0.45);
-                            this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x + this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                            if (playerX < enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                            }
+                            else if (playerY <= enemyY)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                        }
+                        else if (enemyY > spriteY && enemyY <= spriteH) // 4
+                        {
+                            if (playerX < enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                        }
+                        else if (enemyY > spriteH)  // 7
+                        {
+                            if (playerX < enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                            }
+                            else if (playerY > enemyY)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                                if (this->enemySprite.getScale().x < 0 && abs(playerX - enemyX) >= 5)
+                                {
+                                    this->enemySprite.setScale(0.45, 0.45);
+                                    this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x - this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                                }
+                            }
                         }
                     }
-                    if (playerX > enemyX && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
+                    else if (enemyX <= spriteW && enemyX > spriteX)
                     {
-                        this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
-                        if (this->enemySprite.getScale().x < 0)
+                        if (enemyY <= spriteY)  // 2
                         {
-                            this->enemySprite.setScale(0.45, 0.45);
-                            this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x - this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                            if (playerX < enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                                if (this->enemySprite.getScale().x > 0 && abs(enemyX - playerX) >= 5)
+                                {
+                                    this->enemySprite.setScale(-0.45, 0.45);
+                                    this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x + this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                                }
+                            }
+                        }
+                        else if (enemyY > spriteH)  // 8
+                        {
+                            if (playerX > enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                                if (this->enemySprite.getScale().x < 0 && abs(playerX - enemyX) >= 5)
+                                {
+                                    this->enemySprite.setScale(0.45, 0.45);
+                                    this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x - this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                                }
+                            }
                         }
                     }
-                    if (playerY <= enemyY && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
+                    else if (enemyX > spriteW)
                     {
-                        this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
-                    }
-                    if (playerY > enemyY && !Collision::PixelPerfectTest(player->playerSprite, this->enemySprite))
-                    {
-                        this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                        if (enemyY <= spriteY)  // 3
+                        {
+                            if (playerX > enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                            }
+                            else if (playerY <= enemyY)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(-1 * this->moveSpeed, 0));
+                                if (this->enemySprite.getScale().x > 0 && abs(enemyX - playerX) >= 5)
+                                {
+                                    this->enemySprite.setScale(-0.45, 0.45);
+                                    this->enemySprite.setPosition(sf::Vector2f(this->enemySprite.getPosition().x + this->enemySprite.getGlobalBounds().width, this->enemySprite.getPosition().y));
+                                }
+                            }
+                        }
+                        else if (enemyY > spriteY && enemyY <= spriteH) // 6
+                        {
+                            if (playerX > enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                        }
+                        else if (enemyY > spriteH)  // 9
+                        {
+                            if (playerX > enemyX)
+                            {
+                                this->enemySprite.move(sf::Vector2f(1 * this->moveSpeed, 0));
+                            }
+                            else if (playerY > enemyY)
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, 1 * this->moveSpeed));
+                            }
+                            else
+                            {
+                                this->enemySprite.move(sf::Vector2f(0, -1 * this->moveSpeed));
+                            }
+                        }
                     }
                 }
             }
